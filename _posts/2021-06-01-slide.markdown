@@ -2,10 +2,13 @@
 layout: post
 title:  "SLIDE: Single Image 3D Photography with Soft Layering and Depth-aware Inpainting"
 date:   2021-06-01 00:00:00 +00:00
-video: /videos/horse.mp4
+image: /videos/horse.gif
 venue: <em>International Conference on Computer Vision, ICCV</em>, 2021. <span style="color:red;">Oral Presentation.</span>
 categories: research
 authors: "V. Jampani*, H. Chang*, <strong>K. Sargent</strong>, A. Kar, R. Tucker, M. Krainin, D. Kaeser, W. T. Freeman, D. Salesin, B. Curless, C. Liu (*equal contribution)"
 subtitle: "A low power, wireless sensor"
+arxiv: https://arxiv.org/abs/2109.01068
+projectpage: https://varunjampani.github.io/slide/
+visualresults: https://varunjampani.github.io/slide_visual_results.html
 ---
 We design a unified system for novel view synthesis which leverages soft layering and depth-aware inpainting to achieve state-of-the-art results on multiple view synthesis datasets. We leverage the soft layering to incorporate matting, which allows the incorporation of intricate details to synthesized views.
