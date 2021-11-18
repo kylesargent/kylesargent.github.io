@@ -33,6 +33,7 @@
                 Previously, I received my undergraduate degree from Harvard. I earned an A.B. with a joint concentration in Computer Science and Mathematics and graduated Phi Beta Kappa and <i>magna cum laude</i>. I received <i>Highest Honors</i> for my senior thesis, Lipschitz Constraints in Wasserstein GANs, advised by <a href="http://rush-nlp.com/">Alexander Rush</a>.
               </p>
               <p style="text-align:center">
+                <a href="https://drive.google.com/file/d/1k5PWYF4q4BPy3Uz6EP5fqJG2En2qK0Fm/view?usp=sharing">CV</a> /
                 <a target="_blank" href="https://mailhide.io/e/gUcFR4n5"> Email</a> &nbsp;/&nbsp;
                 <a href="https://github.com/kylesargent">GitHub</a> &nbsp;/&nbsp;
                 <a href="https://scholar.google.com/citations?user=Lom6iMAAAAAJ&hl=en&oi=sra">Google Scholar</a> &nbsp;/&nbsp;
@@ -61,9 +62,11 @@
           {% for cat in post.categories %}
           {% if cat == 'research' %}
           <tr>
-            <td style="padding:2.0%;width:37%;vertical-align:middle;min-width:120px">
+            <td style="padding:2.0%;width:37%;vertical-align:middle;horizontal-align:middle;min-width:120px">
               {% if post.image %}
-              <img src="{{post.image}}" alt="project image" style="width:auto; height:auto; max-width:100%;" />
+              <center>
+              <img align='middle' src="{{post.image}}" alt="project image" style="width:auto; height:auto; max-width:100%;horizontal-align:middle" />
+              </center>
               {% endif %}
               {% if post.video %}
               <video height=157 width=269 class="demoVideo" controls autoplay>
@@ -79,12 +82,16 @@
 
               <br>
               {{post.venue}}
+              {% if post.venue2 %}
+              <br>
+              {{post.venue2}}
+              {% endif %}
               <br>
               {% if post.arxiv %}
               <a href="{{post.arxiv}}">arxiv</a> /
               {% endif %}
-              {% if post.code %}
-              <a href="{{post.code}}">code</a> /
+              {% if post.thesis %}
+              <a href="{{post.thesis}}">thesis</a> /
               {% endif %}
               {% if post.poster %}
               <a href="{{post.poster}}">poster</a> /
@@ -97,6 +104,9 @@
               {% endif %}
               {% if post.slides %}
               <a href="{{post.slides}}">slides</a> /
+              {% endif %}
+              {% if post.code %}
+              <a href="{{post.code}}">code</a> /
               {% endif %}
               <p></p>
               {{ post.excerpt }}
