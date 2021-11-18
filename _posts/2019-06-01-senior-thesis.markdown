@@ -13,4 +13,4 @@ poster: https://github.com/kylesargent/sn_gan_pytorch/blob/master/poster.pdf
 code: https://github.com/kylesargent/sn_gan_pytorch/
 ---
 
-We analyze the theory behind the Wasserstein GAN, and investigate techniques for enforcing a Lipschitz constraint for general neural networks. We note some issues with currently used bounds for the spectral norm of convolutional layers, and derive an algorithm to exactly control a CNN's spectral norm by normalizing an implicit Toeplitz matrix. Then, we identify a trade-off between exact Lipschitz constant and discriminator capacity. 
+We analyze the theory behind the Wasserstein GAN, and investigate techniques for enforcing a Lipschitz constraint for general neural networks. We note issues with currently used bounds for the spectral norm of convolutional layers, and derive an algorithm to exactly control a CNN's spectral norm by normalizing an implicit Toeplitz matrix. Then, we identify a trade-off between exact Lipschitz constant and discriminator capacity. 
