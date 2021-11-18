@@ -62,21 +62,26 @@
           {% if cat == 'research' %}
           <tr>
             <td style="padding:2.5%;width:25%;vertical-align:middle;min-width:120px">
+              {% if post.image %}
               <img src="/tn{{post.image}}" alt="project image" style="width:auto; height:auto; max-width:100%;" />
+              {% endif %}
+              {% if post.video %}
+              <video height="160" width="160" class="demoVideo" controls>
+              <source src="/videos/horse.mp4" type="video/mp4">Your browser does not support the video tag.
+              </video>
+              {% endif %}
             </td>
             <td style="padding:2.5%;width:75%;vertical-align:middle">
               <h3>{{post.title}}</h3>
               <br>
+              <br>
               {{post.authors}}
 
               <br>
-              <em>{{post.venue}}</em>, {{ post.date | date: "%Y" }}
+              {{post.venue}}
               <br>
               {% if post.arxiv %}
               <a href="{{post.arxiv}}">arxiv</a> /
-              {% endif %}
-              {% if post.video %}
-              <a href="{{post.video}}">video</a> /
               {% endif %}
               {% if post.code %}
               <a href="{{post.code}}">code</a> /
