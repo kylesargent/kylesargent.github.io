@@ -3,10 +3,9 @@ layout: post
 title:  "Pyramid Adversarial Training Improves ViT Performance"
 date:   2021-06-01 00:00:00 +00:00
 image: /images/teaser.jpeg
-venue: <em>arxiv preprint</em>, 2021.
+venue: <em>CVPR</em>, 2022. <span style="color:red;">Oral Presentation. </span><span style="color:#e75480;">Best paper finalist</span>.
 categories: research
 authors: "<strong>Kyle Sargent,*</strong> Charles Herrmann,* Lu Jiang, Ramin Zabih, Huiwen Chang, Ce Liu, Dilip Krishnan, Deqing Sun (*equal contribution)"
-subtitle: "A low power, wireless sensor"
 arxiv: https://arxiv.org/abs/2111.15121
 ---
 Aggressive data augmentation is a key component of the strong generalization capabilities of Vision Transformer (ViT). We propose "Pyramid Adversarial Training," a strong adversarial augmentation which perturbs images at multiple scales during training. Our proposed technique outperforms pixel-wise adversarial training and leads to a new state of the art on ImageNet-C, ImageNet-Rendition, and ImageNet-Sketch using only our augmentation and the standard ViT-B/16 backbone. 
