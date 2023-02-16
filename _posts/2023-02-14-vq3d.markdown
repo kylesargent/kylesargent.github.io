@@ -1,0 +1,12 @@
+---
+layout: post
+title:  "VQ3D: Learning a 3D Generative Model on ImageNet"
+date:   2021-06-01 00:00:00 +00:00
+image: /videos/vq3d/fully_generated.gif
+venue: <span style="color:red;">(New!)</span><em> arxiv preprint</em>, 2023.
+categories: research
+authors: "<strong>Kyle Sargent</strong>, Jing Yu Koh, Han Zhang, Huiwen Chang, Charles Herrmann, Pratul Srinivasan, Jiajun Wu, Deqing Sun"
+arxiv: https://arxiv.org/abs/2302.06833
+projectpage: https://kylesargent.github.io/vq3d
+---
+VQ3D introduces a 3D-aware NeRF-based decoder to the 2-stage ViT-VQGAN. Then, Stage 1 allows for novel view synthesis from input images, and Stage 2 allows for generation of totally new 3D-aware images. We achieve an ImageNet FID of 16.8, compared to 69.8 for the best baseline.
