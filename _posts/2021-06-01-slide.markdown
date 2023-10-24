@@ -3,7 +3,7 @@ layout: post
 title:  "SLIDE: Single Image 3D Photography with Soft Layering and Depth-aware Inpainting"
 date:   2021-06-01 00:00:00 +00:00
 image: /videos/horse.gif
-venue: <em>International Conference on Computer Vision, ICCV</em>, 2021. <span style="color:red;">Oral Presentation.</span>
+venue: <em>International Conference on Computer Vision, ICCV</em>, 2021. <span style="color:red;">Oral presentation.</span>
 categories: research
 authors: "V. Jampani*, H. Chang*, <strong>K. Sargent</strong>, A. Kar, R. Tucker, M. Krainin, D. Kaeser, W. T. Freeman, D. Salesin, B. Curless, C. Liu (*equal contribution)"
 arxiv: https://arxiv.org/abs/2109.01068
