@@ -1,7 +1,9 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <!doctype html>
 <meta charset=utf-8>
 <title>ZeroNVS: Zero-shot 360-degree View Synthesis from a Single Real Image</title>
 <style>
+
 body {
   margin: 0 auto;
   padding: 30px 20px 50px;
@@ -33,7 +35,10 @@ a {
 }
 a:hover {
   text-decoration: underline;
-  color: #22b;
+  /* color: #22b; */
+}
+a:hover > span.icon{
+  text-decoration: none
 }
 a:hover img {
   opacity: .5;
@@ -138,22 +143,40 @@ a.img {
 </style>
 <h1 align="center">ZeroNVS: Zero-shot 360-degree View Synthesis from a Single Real Image<br>
 
-<h2 align="center"><i>Kyle Sargent, Zizhang Li, Tanmay Shah, Charles Herrmann, Koven Yu,
-  Yunzhi Zhang, Eric Ryan Chan, Dmitry Lagun, Li Fei-Fei, Deqing Sun, Jiajun Wu</i><br>
+<h2 align="center"><i>
+  Kyle Sargent,
+  <a href="https://kyleleey.github.io/">Zizhang Li</a>
+  Tanmay Shah,
+  <a href=https://scholar.google.com/citations?user=LQvi5XAAAAAJ&hl=en">Charles Herrmann</a>,
+  <a href=https://kovenyu.com>Hong-Xing Yu</a>,
+  Yunzhi Zhang,
+  Eric Ryan Chan,
+  Dmitry Lagun,
+  Li Fei-Fei,
+  Deqing Sun,
+  Jiajun Wu</i><br>
 <br></br>
 <span class="link-block">
   <a href="https://github.com/kylesargent/zeronvs"
       class="external-link button is-normal is-rounded is-dark">
-    <span>Paper</span>
+    <span class="icon">
+      <i class="fas fa-file-pdf"></i>
+    </span><span>
+    Paper</span>
   </a>
 </span>
 <span class="link-block">
   <a href="https://github.com/kylesargent/zeronvs"
       class="external-link button is-normal is-rounded is-dark">
-    <span>Code</span>
+    <span class="icon">
+      <i class="fab fa-github"></i>
+    </span><span>
+    Code</span>
   </a>
 </span>
-<h3>Introduction</h3>
+
+<br></br>
+<h1><center><strong>Overview</strong></center></h1>
 <p>
   We introduce a 3D-aware diffusion model, ZeroNVS, for single-image novel view synthesis for in-the-wild scenes. Compared with existing methods mainly developed for single objects with masked backgrounds, we propose key improvements to address challenges introduced by in-the-wild scenes with complex backgrounds. Specifically, we train a generative prior on a mixture of data sources that capture object-centric, indoor, and outdoor scenes.  As the data mixture presents various issues such as depth-scale ambiguity,  we present a novel camera parameterization and normalization scheme. Further, we observe that Score Distillation Sampling (SDS) tends to truncate the distribution of complex backgrounds during distillation of 360º scenes, and  propose SDS-anchoring to improve the diversity of synthesized novel views. Our model sets a new state-of-the-art in LPIPS on DTU in the zero-shot setting, even outperforming methods specifically trained on DTU. We further adapt the challenging  MipNeRF360 dataset as a new benchmark for single-image novel view synthesis, and demonstrate strong performance. Our code and data will be available on acceptance.</p>
 <p>
@@ -161,7 +184,7 @@ a.img {
 </p>
 &nbsp
 
-<h3>View Synthesis Results: CO3D</h3>
+<h1><center><strong>View Synthesis Results: CO3D</strong></center></h1>
 
 <table>
   <tr>
@@ -270,7 +293,8 @@ a.img {
 </table>
 
 
-<h3>View Synthesis Results: RealEstate10K</h3>
+<h1><center><strong>View Synthesis Results: RealEstate10K</strong></center></h1>
+
 <p>In addition to object-centric CO3D scenes, ZeroNVS also handles more complex scenes without centered objects, such as RealEstate10K scenes.</p>
 <table>
   <tr>
@@ -379,8 +403,8 @@ a.img {
   </tr>
 </table>
 
+<h1><center><strong>View Synthesis Results: MipNeRF360</strong></center></h1>
 
-<h3>View Synthesis Results: MipNeRF360</h3>
 <p>
 For MipNeRF360, we show results for our base model (left) and with our proposed SDS anchoring. SDS anchoring is mainly intended to improve background quality; without anchoring, SDS tends to converge to very monotone backgrounds.
 </p>
@@ -579,8 +603,7 @@ For MipNeRF360, we show results for our base model (left) and with our proposed 
   </tr>
 </table>
 
-
-<h3>View Synthesis Results: DTU</h3>
+<h1><center><strong>View Synthesis Results: DTU</strong></center></h1>
 
 <table>
   <tr>
@@ -646,7 +669,8 @@ For MipNeRF360, we show results for our base model (left) and with our proposed 
   </tr>
 </table>
 
-<h3>Qualitative visualization of depth and normals</h3>
+<h1><center><strong>Qualitative visualization of depth and normals</strong></center></h1>
+
 <p>Though 3D reconstruction is not the focus of our work, our method distills NeRFs with high quality normals and depth.</p>
 
 <table>
@@ -694,3 +718,23 @@ For MipNeRF360, we show results for our base model (left) and with our proposed 
     </td>
   </tr>
 </table>
+
+<h3>Citation</h3>
+<pre><code>
+  @misc{zeronvs,
+    author = {
+      Sargent, Kyle
+      and Li, Zizhang
+      and Shah, Tanmay
+      and Herrmann, Charles
+      and Yu, Hong-Xing
+      and Zhang, Yunzhi
+      and Chan, Eric Ryan
+      and Lagun, Dmitry
+      and Fei-Fei, Li
+      and Sun, Deqing
+      and Wu, Jiajun}        
+      title = {ZeroNVS: Zero-shot 360-degree View Synthesis from a Single Real Image},
+      year={2023}
+    }
+</code></pre>
