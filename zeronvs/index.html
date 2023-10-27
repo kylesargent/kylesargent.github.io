@@ -1,1 +1,741 @@
-Coming soon.
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<!doctype html>
+<meta charset=utf-8>
+<title>ZeroNVS: Zero-Shot 360-Degree View Synthesis from a Single Real Image</title>
+<style>
+
+body {
+  margin: 0 auto;
+  padding: 30px 20px 50px;
+  font-family: sans-serif;
+  background: #ffffff;
+  color: #222;
+  max-width: 1100px;
+}
+p {
+  line-height: 150%;
+  max-width: 45em;
+  max-width: 1100px;
+}
+h1, h2 {
+  font-weight: 200;
+   max-width: 1100px;
+}
+h2 a {
+  color: #000;
+}
+
+h3 {
+  margin-top: 40px;
+  max-width: 1100px;
+}
+a {
+  text-decoration: none;
+  color: #22b;
+}
+a:hover {
+  text-decoration: underline;
+  /* color: #22b; */
+}
+a:hover > span.icon{
+  text-decoration: none
+}
+a:hover img {
+  opacity: .5;
+}
+.paper img { background: #888; }
+.video img {
+  border-radius: 6px;
+  background: #000;
+}
+h1 span {
+  font-size: 90%;
+  line-height: 1.5em;
+}
+h1 span::before { content: "("; }
+h1 span::after { content: ")"; }
+h1 span::before, h1 span::after {
+  vertical-align: .06em;
+}
+h2 span {
+  line-height: 2em;
+}
+em {
+  color: #333;
+  font-weight: bold;
+  font-style: normal;
+}
+.teaser {
+  max-width: 45em;
+  margin: 40px 0 60px 0;
+  white-space: nowrap;
+  position: relative;
+}
+.teaser .imgs .full {
+  width: 100%;
+}
+.teaser .imgs .center {
+  position: absolute;
+  width: 32%;
+  top: -3%;
+  left: 34%;
+}
+.teaser .labels span {
+  display: inline-block;
+  width: 33%;
+  text-align: center;
+  padding-top: 10px;
+}
+.imgContainer{
+    float:left;
+}
+.bibtex {
+  white-space: pre;
+  font-family: monospace;
+  line-height: 150%;
+  background: #fff;
+  padding: 10px;
+  display: inline-block;
+  border-radius: 4px;
+}
+.crow > * {
+  vertical-align: middle;
+  margin-right: 20px;
+}
+a.img {
+  display: inline-block;
+}
+.links {
+  display: inline-block;
+  line-height: 150%;
+  padding: 8px 0;
+}
+.links a {
+  padding: 0 3px;
+}
+.examples {
+  padding: 10px 0;
+  max-width: 50em;
+}
+.examples img {
+  display: inline-block;
+  width: 192px;
+  height: 108px;
+}
+.button {
+    display: inline-block;
+    padding: 2px 10px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+}
+.is-dark {
+    background-color: #333;
+    color: white;
+}
+.is-rounded {
+    border-radius: 30px;
+}
+.icon {
+    margin-right: 5px;
+}
+  
+</style>
+<h1 align="center">ZeroNVS: Zero-Shot 360-Degree View Synthesis from a Single Real Image<br>
+
+<h2 align="center"><i>
+  Kyle Sargent,
+  <a href="https://kyleleey.github.io/">Zizhang Li</a>
+  <a href="https://www.linkedin.com/in/tashah/">Tanmay Shah</a>,
+  <a href=https://scholar.google.com/citations?user=LQvi5XAAAAAJ&hl=en">Charles Herrmann</a>,
+  <a href=https://kovenyu.com>Hong-Xing Yu</a>,
+  <a href=https://cs.stanford.edu/~yzzhang>Yunzhi Zhang</a>,
+  <a href=https://ericryanchan.github.io>Eric Ryan Chan</a>,
+  <a href=https://scholar.google.com/citations?user=sY8lt7AAAAAJ&hl=en>Dmitry Lagun</a>,
+  <a href=https://profiles.stanford.edu/fei-fei-li>Li Fei-Fei</a>,
+  <a href=https://deqings.github.io>Deqing Sun</a>,
+  <a href=https://jiajunwu.com>Jiajun Wu</a>
+  </i><br>
+<br></br>
+<span class="link-block">
+  <a href="https://github.com/kylesargent/zeronvs"
+      class="external-link button is-normal is-rounded is-dark">
+    <span class="icon">
+      <i class="fas fa-file-pdf"></i>
+    </span><span>
+    Paper</span>
+  </a>
+</span>
+<span class="link-block">
+  <a href="https://github.com/kylesargent/zeronvs"
+      class="external-link button is-normal is-rounded is-dark">
+    <span class="icon">
+      <i class="fab fa-github"></i>
+    </span><span>
+    Code</span>
+  </a>
+</span>
+
+<br></br>
+<h2><center><strong>Overview</strong></center></h2>
+<p>
+  We introduce a 3D-aware diffusion model, ZeroNVS, for single-image novel view synthesis for in-the-wild scenes. Compared with existing methods mainly developed for single objects with masked backgrounds, we propose key improvements to address challenges introduced by in-the-wild scenes with complex backgrounds. Specifically, we train a generative prior on a mixture of data sources that capture object-centric, indoor, and outdoor scenes.  As the data mixture presents various issues such as depth-scale ambiguity,  we present a novel camera parameterization and normalization scheme. Further, we observe that Score Distillation Sampling (SDS) tends to truncate the distribution of complex backgrounds during distillation of 360º scenes, and  propose SDS-anchoring to improve the diversity of synthesized novel views. Our model sets a new state-of-the-art in LPIPS on DTU in the zero-shot setting, even outperforming methods specifically trained on DTU. We further adapt the challenging  MipNeRF360 dataset as a new benchmark for single-image novel view synthesis, and demonstrate strong performance.</p>
+<p>
+  All view synthesis results are from NeRF distillation using the <em>same</em> diffusion model.
+</p>
+&nbsp
+
+<h2><center><strong>View Synthesis Results: CO3D</strong></center></h2>
+
+<table>
+  <tr>
+    <!-- Image -->
+    <td>
+      <img src="motorcycle.png" style="width:270px;">
+    </td>
+    <!-- Video -->
+    <td>
+      <video src="motorcycle_views.mp4" controls muted loop autoplay style="width:270px;"></video>
+    </td>
+
+    <td></td><td></td><td></td><td></td><td></td><td></td>
+
+    <td>
+      <img src="motorcycle_2.png" style="width:270px;">
+    </td>
+    <!-- Video -->
+    <td>
+      <video src="motorcycle_views_2.mp4" controls muted loop autoplay style="width:270px;"></video>
+    </td>
+  </tr>
+
+  <tr>
+    <!-- Image -->
+    <td>
+      <img src="backpack.png" style="width:270px;">
+    </td>
+    <!-- Video -->
+    <td>
+      <video src="backpack_views.mp4" controls muted loop autoplay style="width:270px;"></video>
+    </td>
+
+    <td></td><td></td><td></td><td></td><td></td><td></td>
+
+    <td>
+      <img src="picnic.png" style="width:270px;">
+    </td>
+    <!-- Video -->
+    <td>
+      <video src="picnic_views.mp4" controls muted loop autoplay style="width:270px;"></video>
+    </td>
+  </tr>
+
+  <tr>
+    <!-- Image -->
+    <td>
+      <img src="remote.png" style="width:270px;">
+    </td>
+    <!-- Video -->
+    <td>
+      <video src="remote_views.mp4" controls muted loop autoplay style="width:270px;"></video>
+    </td>
+
+    <td></td><td></td><td></td><td></td><td></td><td></td>
+
+    <td>
+      <img src="plant.png" style="width:270px;">
+    </td>
+    <!-- Video -->
+    <td>
+      <video src="plant_views.mp4" controls muted loop autoplay style="width:270px;"></video>
+    </td>
+  </tr>
+
+  <tr>
+    <!-- Image -->
+    <td>
+      <img src="toytruck.png" style="width:270px;">
+    </td>
+    <!-- Video -->
+    <td>
+      <video src="toytruck_views.mp4" controls muted loop autoplay style="width:270px;"></video>
+    </td>
+
+    <td></td><td></td><td></td><td></td><td></td><td></td>
+
+    <td>
+      <img src="hydrant.png" style="width:270px;">
+    </td>
+    <!-- Video -->
+    <td>
+      <video src="hydrant_views.mp4" controls muted loop autoplay style="width:270px;"></video>
+    </td>
+  </tr>
+  <tr>
+    <!-- Caption for Image -->
+    <td style="text-align:center;">
+      Input
+    </td>
+    <!-- Caption for Video -->
+    <td style="text-align:center;">
+      Novel Views
+    </td>
+
+    <td></td><td></td><td></td><td></td><td></td><td></td>
+
+    <td style="text-align:center;">
+      Input
+    </td>
+    <!-- Caption for Video -->
+    <td style="text-align:center;">
+      Novel Views
+    </td>
+  </tr>
+</table>
+
+
+<h2><center><strong>View Synthesis Results: RealEstate10K</strong></center></h2>
+
+<p>In addition to object-centric CO3D scenes, ZeroNVS also handles more complex scenes without centered objects, such as RealEstate10K scenes.</p>
+<table>
+  <tr>
+    <!-- Image -->
+    <td>
+      <img src="office.png" style="width:270px;">
+    </td>
+    <!-- Video -->
+    <td>
+      <video src="office_views.mp4" controls muted loop autoplay style="width:270px;"></video>
+    </td>
+
+    <td></td><td></td><td></td><td></td><td></td><td></td>
+
+    <td>
+      <img src="livingroom.png" style="width:270px;">
+    </td>
+    <!-- Video -->
+    <td>
+      <video src="livingroom_views.mp4" controls muted loop autoplay style="width:270px;"></video>
+    </td>
+  </tr>
+
+  <tr>
+    <!-- Image -->
+    <td>
+      <img src="bedroom.png" style="width:270px;">
+    </td>
+    <!-- Video -->
+    <td>
+      <video src="bedroom_views.mp4" controls muted loop autoplay style="width:270px;"></video>
+    </td>
+
+    <td></td><td></td><td></td><td></td><td></td><td></td>
+
+    <td>
+      <img src="kitchen.png" style="width:270px;">
+    </td>
+    <!-- Video -->
+    <td>
+      <video src="kitchen_views.mp4" controls muted loop autoplay style="width:270px;"></video>
+    </td>
+  </tr>
+  
+  <tr>
+    <!-- Image -->
+    <td>
+      <img src="kitchenhallway.png" style="width:270px;">
+    </td>
+    <!-- Video -->
+    <td>
+      <video src="kitchenhallway_views.mp4" controls muted loop autoplay style="width:270px;"></video>
+    </td>
+
+    <td></td><td></td><td></td><td></td><td></td><td></td>
+
+    <td>
+      <img src="closet.png" style="width:270px;">
+    </td>
+    <!-- Video -->
+    <td>
+      <video src="closet_views.mp4" controls muted loop autoplay style="width:270px;"></video>
+    </td>
+  </tr>
+
+  <tr>
+    <!-- Image -->
+    <td>
+      <img src="diningroom.png" style="width:270px;">
+    </td>
+    <!-- Video -->
+    <td>
+      <video src="diningroom_views.mp4" controls muted loop autoplay style="width:270px;"></video>
+    </td>
+
+    <td></td><td></td><td></td><td></td><td></td><td></td>
+
+    <td>
+      <img src="loungearea.png" style="width:270px;">
+    </td>
+    <!-- Video -->
+    <td>
+      <video src="loungearea_views.mp4" controls muted loop autoplay style="width:270px;"></video>
+    </td>
+  </tr>
+
+  <tr>
+    <!-- Caption for Image -->
+    <td style="text-align:center;">
+      Input
+    </td>
+    <!-- Caption for Video -->
+    <td style="text-align:center;">
+      Novel Views
+    </td>
+
+    <td></td><td></td><td></td><td></td><td></td><td></td>
+
+    <td style="text-align:center;">
+      Input
+    </td>
+    <!-- Caption for Video -->
+    <td style="text-align:center;">
+      Novel Views
+    </td>
+  </tr>
+</table>
+
+<h2><center><strong>View Synthesis Results: Mip-NeRF 360</strong></center></h2>
+
+<p>
+For Mip-NeRF 360, we show results for our base model (left) and with our proposed SDS anchoring. SDS anchoring is mainly intended to improve background quality; without anchoring, SDS tends to converge to very monotone backgrounds.
+</p>
+<table>
+  <tr>
+    <!-- Caption for Image -->
+    <td style="text-align:center;">
+      Input
+    </td>
+    <!-- Caption for Video -->
+    <td style="text-align:center;">
+      Novel Views (no anchoring)
+    </td>
+
+    <td></td><td></td><td></td><td></td><td></td><td></td>
+
+    <td style="text-align:center;">
+      Input
+    </td>
+    <!-- Caption for Video -->
+    <td style="text-align:center;">
+      Novel Views (SDS anchoring)
+    </td>
+  </tr>
+
+  <tr>
+    <!-- Image -->
+    <td>
+      <img src="mipnerf360_bsln_4.png" style="width:270px;">
+    </td>
+    <!-- Video -->
+    <td>
+      <video src="mipnerf360_bsln_4_views.mp4" controls muted loop autoplay style="width:270px;"></video>
+    </td>
+
+    <td></td><td></td><td></td><td></td><td></td><td></td>
+
+    <td>
+      <img src="mipnerf360_bsln_4_anchored.png" style="width:270px;">
+    </td>
+    <!-- Video -->
+    <td>
+      <video src="mipnerf360_bsln_4_anchored_views.mp4" controls muted loop autoplay style="width:270px;"></video>
+    </td>
+  </tr>
+<tr>
+    <!-- Image -->
+    <td>
+      <img src="mipnerf360_bsln_6.png" style="width:270px;">
+    </td>
+    <!-- Video -->
+    <td>
+      <video src="mipnerf360_bsln_6_views.mp4" controls muted loop autoplay style="width:270px;"></video>
+    </td>
+
+    <td></td><td></td><td></td><td></td><td></td><td></td>
+
+    <td>
+      <img src="mipnerf360_bsln_6_anchored.png" style="width:270px;">
+    </td>
+    <!-- Video -->
+    <td>
+      <video src="mipnerf360_bsln_6_anchored_views.mp4" controls muted loop autoplay style="width:270px;"></video>
+    </td>
+  </tr>
+  
+  <tr>
+    <!-- Image -->
+    <td>
+      <img src="mipnerf360_bsln_1.png" style="width:270px;">
+    </td>
+    <!-- Video -->
+    <td>
+      <video src="mipnerf360_bsln_1_views.mp4" controls muted loop autoplay style="width:270px;"></video>
+    </td>
+
+    <td></td><td></td><td></td><td></td><td></td><td></td>
+
+    <td>
+      <img src="mipnerf360_bsln_1_anchored.png" style="width:270px;">
+    </td>
+    <!-- Video -->
+    <td>
+      <video src="mipnerf360_bsln_1_anchored_views.mp4" controls muted loop autoplay style="width:270px;"></video>
+    </td>
+  </tr>
+
+  
+  <tr>
+    <!-- Image -->
+    <td>
+      <img src="mipnerf360_bsln_2.png" style="width:270px;">
+    </td>
+    <!-- Video -->
+    <td>
+      <video src="mipnerf360_bsln_2_views.mp4" controls muted loop autoplay style="width:270px;"></video>
+    </td>
+
+    <td></td><td></td><td></td><td></td><td></td><td></td>
+
+    <td>
+      <img src="mipnerf360_bsln_2_anchored.png" style="width:270px;">
+    </td>
+    <!-- Video -->
+    <td>
+      <video src="mipnerf360_bsln_2_anchored_views.mp4" controls muted loop autoplay style="width:270px;"></video>
+    </td>
+  </tr>
+
+  <tr>
+    <!-- Image -->
+    <td>
+      <img src="mipnerf360_bsln_3.png" style="width:270px;">
+    </td>
+    <!-- Video -->
+    <td>
+      <video src="mipnerf360_bsln_3_views.mp4" controls muted loop autoplay style="width:270px;"></video>
+    </td>
+
+    <td></td><td></td><td></td><td></td><td></td><td></td>
+
+    <td>
+      <img src="mipnerf360_bsln_3_anchored.png" style="width:270px;">
+    </td>
+    <!-- Video -->
+    <td>
+      <video src="mipnerf360_bsln_3_anchored_views.mp4" controls muted loop autoplay style="width:270px;"></video>
+    </td>
+  </tr>
+
+  
+
+  <tr>
+    <!-- Image -->
+    <td>
+      <img src="mipnerf360_bsln_5.png" style="width:270px;">
+    </td>
+    <!-- Video -->
+    <td>
+      <video src="mipnerf360_bsln_5_views.mp4" controls muted loop autoplay style="width:270px;"></video>
+    </td>
+
+    <td></td><td></td><td></td><td></td><td></td><td></td>
+
+    <td>
+      <img src="mipnerf360_bsln_5_anchored.png" style="width:270px;">
+    </td>
+    <!-- Video -->
+    <td>
+      <video src="mipnerf360_bsln_5_anchored_views.mp4" controls muted loop autoplay style="width:270px;"></video>
+    </td>
+  </tr>
+
+  
+
+  <tr>
+    <!-- Image -->
+    <td>
+      <img src="mipnerf360_bsln_7.png" style="width:270px;">
+    </td>
+    <!-- Video -->
+    <td>
+      <video src="mipnerf360_bsln_7_views.mp4" controls muted loop autoplay style="width:270px;"></video>
+    </td>
+
+    <td></td><td></td><td></td><td></td><td></td><td></td>
+
+    <td>
+      <img src="mipnerf360_bsln_7_anchored.png" style="width:270px;">
+    </td>
+    <!-- Video -->
+    <td>
+      <video src="mipnerf360_bsln_7_anchored_views.mp4" controls muted loop autoplay style="width:270px;"></video>
+    </td>
+  </tr>
+
+  <tr>
+    <!-- Caption for Image -->
+    <td style="text-align:center;">
+      Input
+    </td>
+    <!-- Caption for Video -->
+    <td style="text-align:center;">
+      Novel Views (no anchoring)
+    </td>
+
+    <td></td><td></td><td></td><td></td><td></td><td></td>
+
+    <td style="text-align:center;">
+      Input
+    </td>
+    <!-- Caption for Video -->
+    <td style="text-align:center;">
+      Novel Views (SDS anchoring)
+    </td>
+  </tr>
+</table>
+
+<h2><center><strong>View Synthesis Results: DTU</strong></center></h2>
+
+<table>
+  <tr>
+    <!-- Image -->
+    <td>
+      <img src="pig.png" style="width:270px;">
+    </td>
+    <!-- Video -->
+    <td>
+      <video src="pig_views.mp4" controls onloadedmetadata="this.playbackRate = 0.5;" muted loop autoplay style="width:270px;"></video>
+    </td>
+
+    <td></td><td></td><td></td><td></td><td></td><td></td>
+
+    <td>
+      <img src="bucket.png" style="width:270px;">
+    </td>
+    <!-- Video -->
+    <td>
+      <video src="bucket_views.mp4" controls onloadedmetadata="this.playbackRate = 0.5;" muted loop autoplay style="width:270px;"></video>
+    </td>
+  </tr>
+
+  <tr>
+    <!-- Image -->
+    <td>
+      <img src="buddha.png" style="width:270px;">
+    </td>
+    <!-- Video -->
+    <td>
+      <video src="buddha_views.mp4" controls onloadedmetadata="this.playbackRate = 0.5;" muted loop autoplay style="width:270px;"></video>
+    </td>
+
+    <td></td><td></td><td></td><td></td><td></td><td></td>
+
+    <td>
+      <img src="smurf.png" style="width:270px;">
+    </td>
+    <!-- Video -->
+    <td>
+      <video src="smurf_views.mp4" controls onloadedmetadata="this.playbackRate = 0.5;" muted loop autoplay style="width:270px;"></video>
+    </td>
+  </tr>
+  <tr>
+    <!-- Caption for Image -->
+    <td style="text-align:center;">
+      Input
+    </td>
+    <!-- Caption for Video -->
+    <td style="text-align:center;">
+      Novel Views
+    </td>
+
+    <td></td><td></td><td></td><td></td><td></td><td></td>
+
+    <td style="text-align:center;">
+      Input
+    </td>
+    <!-- Caption for Video -->
+    <td style="text-align:center;">
+      Novel Views
+    </td>
+  </tr>
+</table>
+
+<h2><center><strong>Qualitative visualization of depth and normals</strong></center></h2>
+
+<p>Though 3D reconstruction is not the focus of our work, our method distills NeRFs with high quality normals and depth.</p>
+
+<table>
+  <tr>
+    <!-- Image -->
+    <td>
+      <img src="bedroom_geo.png" style="width:270px;">
+    </td>
+    <!-- Video -->
+    <td>
+      <video src="bedroom_geo_views.mp4" controls muted loop autoplay style="width:810px;"></video>
+    </td>
+  </tr>
+
+  <tr>
+    <!-- Image -->
+    <td>
+      <img src="mipnerf360_bsln_2_geo.png" style="width:270px;">
+    </td>
+    <!-- Video -->
+    <td>
+      <video src="mipnerf360_bsln_2_geo_views.mp4" controls muted loop autoplay style="width:810px;"></video>
+    </td>
+  </tr>
+
+  <tr>
+    <!-- Image -->
+    <td>
+      <img src="backpack_geo.png" style="width:270px;">
+    </td>
+    <!-- Video -->
+    <td>
+      <video src="backpack_geo_views.mp4" controls muted loop autoplay style="width:810px;"></video>
+    </td>
+  </tr>
+
+  <tr>
+    <!-- Caption for Image -->
+    <td style="text-align:center;">
+      Input
+    </td>
+    <!-- Caption for Video -->
+    <td style="text-align:center;">
+      Novel Views, depth, and normals
+    </td>
+  </tr>
+</table>
+
+<h3>Citation</h3>
+<pre><code>
+  @misc{zeronvs,
+    author = {
+      Sargent, Kyle
+      and Li, Zizhang
+      and Shah, Tanmay
+      and Herrmann, Charles
+      and Yu, Hong-Xing
+      and Zhang, Yunzhi
+      and Chan, Eric Ryan
+      and Lagun, Dmitry
+      and Fei-Fei, Li
+      and Sun, Deqing
+      and Wu, Jiajun}        
+      title = {ZeroNVS: Zero-shot 360-degree View Synthesis from a Single Real Image},
+      year={2023}
+    }
+</code></pre>
