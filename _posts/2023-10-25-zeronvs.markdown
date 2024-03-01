@@ -3,7 +3,7 @@ layout: post
 title:  "ZeroNVS: Zero-Shot 360-Degree View Synthesis from a Single Real Image"
 date:   2021-10-25 00:00:00 +00:00
 image: /videos/motorcycle_cropped.gif
-venue: <em> arxiv</em>, 2023.
+venue: <em>CVPR</em>, 2024.
 categories: research
 authors: "<strong>Kyle Sargent</strong>, Zizhang Li, Tanmay Shah, Charles Herrmann, Hong-Xing Yu, Yunzhi Zhang, Eric Ryan Chan, Dmitry Lagun, Li Fei-Fei, Deqing Sun, Jiajun Wu"
 arxiv: https://kylesargent.github.io/zeronvs
