@@ -42,7 +42,7 @@
                 <!-- <a href="https://drive.google.com/file/d/1k5PWYF4q4BPy3Uz6EP5fqJG2En2qK0Fm/view?usp=sharing">CV</a> / -->
                 <a target="_blank" href="https://mailhide.io/e/gUcFR4n5"> Email</a> &nbsp;/&nbsp;
                 <a href="https://github.com/kylesargent">GitHub</a> &nbsp;/&nbsp;
-                <a href="https://scholar.google.com/citations?user=Lom6iMAAAAAJ&hl=en&oi=sra">Google Scholar</a> &nbsp;/&nbsp;
+                <a href="https://scholar.google.com/citations?user=-3vo5ukAAAAJ&hl=en">Google Scholar</a> &nbsp;/&nbsp;
                 <a href="https://www.linkedin.com/in/kyle-sargent-784006134/"> LinkedIn </a> &nbsp;/&nbsp;
                 <a href="https://kylesargent.github.io/misc"> Misc </a>
               </p>
@@ -76,8 +76,8 @@
               </center>
               {% endif %}
               {% if post.video %}
-              <video height=157 width=269 class="demoVideo" controls autoplay>
-              <source src="/videos/horse.mp4" type="video/mp4">Your browser does not support the video tag.
+              <video height=157 width=269 class="demoVideo" muted loop autoplay>
+              <source src="{{ post.video }}" type="video/mp4">Your browser does not support the video tag.
               </video>
               {% endif %}
             </td>

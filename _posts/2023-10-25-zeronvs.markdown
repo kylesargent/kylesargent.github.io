@@ -5,8 +5,8 @@ date:   2021-10-25 00:00:00 +00:00
 image: /videos/motorcycle_cropped.gif
 venue: <em>CVPR</em>, 2024.
 categories: research
-authors: "<strong>Kyle Sargent</strong>, Zizhang Li, Tanmay Shah, Charles Herrmann, Hong-Xing Yu, Yunzhi Zhang, Eric Ryan Chan, Dmitry Lagun, Li Fei-Fei, Deqing Sun, Jiajun Wu"
-arxiv: https://kylesargent.github.io/zeronvs
+authors: "<strong>Kyle Sargent</strong>, Zizhang Li, Tanmay Shah, Charles Herrmann, Hong-Xing &ldquo;Koven&rdquo; Yu, Yunzhi Zhang, Eric Ryan Chan, Dmitry Lagun, Li Fei-Fei, Deqing Sun, Jiajun Wu"
+arxiv: https://arxiv.org/abs/2310.17994
 projectpage: https://kylesargent.github.io/zeronvs
 ---
 We train a 3D-aware diffusion model, ZeroNVS on a mixture of scene data sources that capture object-centric, indoor, and outdoor scenes. This enables zero-shot SDS distillation of 360-degree NeRF scenes from a single image. Our model sets a new state-of-the-art result in LPIPS on the DTU dataset in the zero-shot setting. We also use the MipNeRF-360 dataset as a benchmark for single-image NVS.
