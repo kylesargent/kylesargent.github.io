@@ -2,15 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Flow to the Mode: Mode-Seeking Diffusion Autoencoders for Image Tokenization</title>
+  <title>Flow to the Mode: Mode-Seeking Diffusion Autoencoders
+    for State-of-the-Art Image Tokenization</title>
   <style>
     /* Elegant Mathematical Blog Style with Light Blue/Gray Tones */
     body {
       margin: 0 auto;
       padding: 40px 20px;
-      max-width: 900px;
+      max-width: 1100px;
       font-family: "Georgia", serif;
-      background-color: #f0f4f8;
+      background-color: #ffffff;
       color: #333;
       line-height: 1.6;
     }
@@ -53,7 +54,7 @@
       color: #222;
     }
     p {
-      max-width: 800px;
+      max-width: 1100px;
       margin: 20px auto;
       font-size: 1.1em;
     }
@@ -87,7 +88,7 @@
       font-size: 1.1em;
     }
     .comparison-container {
-        max-width: 900px;
+        max-width: 1100px;
         margin: 0 auto;
         font-family: Arial, sans-serif;
         }
@@ -202,7 +203,8 @@
 </head>
 <body>
 
-  <h1>Flow to the Mode: Mode-Seeking Diffusion Autoencoders for Image Tokenization</h1>
+  <h1>Flow to the Mode: Mode-Seeking Diffusion Autoencoders
+    for State-of-the-Art Image Tokenization</h1>
   <h2></h2>
   <p class="authors">
     Kyle Sargent, Kyle Hsu, Justin Johnson, Li Fei-Fei, Jiajun Wu
@@ -254,13 +256,16 @@ and verify the performance.
     </body>
     </html>
 
+    <img src="images/flowmo/teaser (19).svg" alt="Vector Graphic", width=600>
 
   <h3>Method</h3>
   <p>
-    FlowMo is implemented as a diffusion autoencoder with transformer-based encoder and decoder. The key components are described below.
+    FlowMo is implemented as a diffusion autoencoder with transformer-based encoder and decoder. The architecture diagram is shown below.
   </p>
 
-  <h4>Encoding and Quantization</h4>
+  <img src="images/flowmo/Arch (3).svg" alt="Vector Graphic", width=1300>
+
+  <!-- <h4>Encoding and Quantization</h4> -->
   <p>
     The encoder maps an image <em>x</em> (with an initial latent <em>c₀</em>) to a continuous latent representation:
   </p>
@@ -274,7 +279,7 @@ and verify the performance.
     $$c = q(\hat{c}) = 2 \cdot \mathbf{1}[\hat{c} \geq 0] - 1$$
   </div>
 
-  <h4>Decoding via Diffusion</h4>
+  <!-- <h4>Decoding via Diffusion</h4> -->
   <p>
     The decoder models a velocity field that transforms a noisy image back to a clean one. A noisy image <em>x<sub>t</sub></em> is defined as:
   </p>
@@ -290,6 +295,9 @@ and verify the performance.
 
   <h4>Training – Stage 1A (Mode-Matching Pre-training)</h4>
   <p>
+    First, FlowMo is trained end-to-end as a diffusion autoencoder. A diagram of the Stage 1A training is shown below:
+    <img src="images/flowmo/Stage 1A.svg" alt="Vector Graphic", width=500>
+
     The model is trained end-to-end with a diffusion loss:
   </p>
   <div class="math-block">
@@ -304,7 +312,11 @@ and verify the performance.
 
   <h4>Training – Stage 1B (Mode-Seeking Post-training)</h4>
   <p>
-    In this stage, the encoder is fixed and the decoder is fine-tuned using a perceptual sampling loss:
+    In Stage 1B of training, the goal is to constrain the model to drop modes of the reconstruction distribution which are not perceptually close to the original image.
+    A diagram is shown below:
+    <img src="images/flowmo/Stage 1B.svg" alt="Vector Graphic", width=550>
+    
+    In this stage, the encoder is fixed and the decoder is fine-tuned using a sample-level perceptual loss:
   </p>
   <div class="math-block">
     $$L_{\text{sample}} = \mathbb{E}\Big[d_{\text{perc}}\Big(x, \Big(d_{t_n} \circ d_{t_{n-1}} \circ \cdots \circ d_{t_1}\Big)(x)\Big]\Big)$$
