@@ -216,7 +216,7 @@
 a lower-dimensional latent space before learning a generative model. Tokenizer training typically follows a standard
 recipe in which images are compressed and reconstructed
 subject to a combination of MSE, perceptual, and adversarial losses. Diffusion autoencoders have been proposed
-in prior work as a way to learn end-to-end perceptuallyoriented image compression, but have not yet shown stateof-the-art performance on the competitive task of ImageNet1K reconstruction. In this work, we propose FlowMo, a
+in prior work as a way to learn end-to-end perceptuallyoriented image compression, but have not yet shown state-of-the-art performance on the competitive task of ImageNet1K reconstruction. In this work, we propose FlowMo, a
 transformer-based diffusion autoencoder. FlowMo achieves
 a new state-of-the-art for image tokenization at multiple bitrates. We achieve this without using convolutions, adversarial losses, spatially-aligned 2-dimensional latent codes,
 or distilling from other tokenizers. Our key insight is that
@@ -328,9 +328,13 @@ and verify the performance.
     $$L = L_{\text{flow}} + \lambda_{\text{sample}} L_{\text{sample}}$$
   </div>
 
-  <h4>Inference</h4>
+  <h3>Conclusion</h3>
   <p>
-    At test time, the probability flow ODE is solved using a shifted sampler. This sampler adjusts the timestep spacing so that more steps are taken at lower noise levels, thereby improving reconstruction quality.
+    Please check out our paper for detailed comparisons and analysis, and our galleries 
+    <a href="https://kylesargent.github.io/flowmo_a_gallery.html">(Gallery A</a>
+    <a href="https://kylesargent.github.io/flowmo_b_gallery.html">, Gallery B)</a>
+    for interactive comparisons!
+
   </p>
 
   <h3>Citation</h3>
