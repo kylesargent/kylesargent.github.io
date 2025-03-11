@@ -33,13 +33,20 @@
     }
     .image-pair {
       display: flex;
-      margin-bottom: 10px;
+      margin-bottom: 0px;
     }
-    .image-container {
+    /* .image-container {
       flex: 1;
       position: relative;
       overflow: hidden;
-      border: 1px solid #ccc;
+      border: 0px solid #ccc;
+    } */
+    .image-container img {
+      display: block;
+      width: 100%;
+      height: auto;
+      margin: 0;
+      padding: 0;
     }
     .original-container,
     .reconstructed-container {
@@ -110,6 +117,13 @@
       margin-top: 5px;
       font-size: 12px;
       color: #666;
+    }
+    .column-labels {
+      display: flex;
+      justify-content: space-between;
+      margin: 10px 0;
+      font-size: 16px;
+      font-weight: bold;
     }
   </style>
   <!-- Optional: Include MathJax if you need math rendering -->
@@ -192,7 +206,7 @@
       const labels = document.createElement('div');
       labels.classList.add('method-labels');
       const label1 = document.createElement('span');
-      label1.innerText = 'FlowMo-A';
+      label1.innerText = 'FlowMo-B';
       const label2 = document.createElement('span');
       label2.innerText = 'OpenMagViT-V2';
       labels.appendChild(label1);
@@ -201,6 +215,17 @@
       
       // Append the pair container and slider to the wrapper
       wrapper.appendChild(pairContainer);
+      
+      const columnLabels = document.createElement('div');
+      columnLabels.classList.add('column-labels');
+      const leftLabel = document.createElement('span');
+      leftLabel.innerText = 'Original';
+      const rightLabel = document.createElement('span');
+      rightLabel.innerText = 'Reconstructed Image';
+      columnLabels.appendChild(leftLabel);
+      columnLabels.appendChild(rightLabel);
+      wrapper.appendChild(columnLabels);
+      
       wrapper.appendChild(sliderContainer);
       
       // Set up the slider event to update the clip path and divider position
