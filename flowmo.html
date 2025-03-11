@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Flow to the Mode: Mode-Seeking Diffusion Autoencoders for Image Tokenization</title>
+  <style>
+    /* Elegant Mathematical Blog Style with Light Blue/Gray Tones */
+    body {
+      margin: 0 auto;
+      padding: 40px 20px;
+      max-width: 900px;
+      font-family: "Georgia", serif;
+      background-color: #f0f4f8;
+      color: #333;
+      line-height: 1.6;
+    }
+    a {
+      text-decoration: none;
+      color: #3a6ea5;
+    }
+    a:hover {
+      text-decoration: underline;
+      color: #2d4f8f;
+    }
+    h1, h2 {
+      font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+      font-weight: 300;
+      color: #222;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+      font-size: 2.4em;
+    }
+    h2 {
+      text-align: center;
+      margin: 0 0 40px 0;
+      font-size: 1.4em;
+      font-style: italic;
+      color: #555;
+    }
+    .authors {
+      text-align: center;
+      font-size: 1em;
+      color: #666;
+      margin-bottom: 40px;
+    }
+    h3 {
+      margin-top: 50px;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: 10px;
+      font-weight: 300;
+      color: #222;
+    }
+    p {
+      max-width: 800px;
+      margin: 20px auto;
+      font-size: 1.1em;
+    }
+    pre, code {
+      background: #e8f0fe;
+      padding: 10px;
+      border-radius: 5px;
+      overflow-x: auto;
+      font-family: "Courier New", monospace;
+    }
+    .clearfix::after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+    .imgContainer {
+      float: left;
+      margin: 20px 20px 20px 0;
+      width: 45%;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 20px auto;
+    }
+    /* Math styling */
+    .math-block {
+      text-align: center;
+      margin: 20px 0;
+      font-size: 1.1em;
+    }
+    .comparison-container {
+        max-width: 900px;
+        margin: 0 auto;
+        font-family: Arial, sans-serif;
+        }
+
+        .image-pair {
+        display: flex;
+        margin-bottom: 30px;
+        }
+
+        .image-container {
+        flex: 1;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid #ccc;
+        }
+
+        .original-container,
+        .reconstructed-container {
+        max-width: 400px;
+        }
+
+        img {
+        display: block;
+        max-width: 100%;
+        }
+
+        .comparison-title {
+        text-align: center;
+        margin-bottom: 5px;
+        font-weight: bold;
+        font-size: 14px;
+        }
+
+        .reconstructed-container {
+        position: relative;
+        }
+
+        .method-one,
+        .method-two {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        }
+
+        .method-two {
+        clip-path: polygon(0% 0%, 0% 100%, 50% 100%, 50% 0%);
+        transition: clip-path 0.1s ease;
+        }
+
+        .divider {
+        position: absolute;
+        width: 4px;
+        background: #0066cc;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 10;
+        }
+
+        .slider-container {
+        margin-top: 10px;
+        width: 400px;
+        }
+
+        .slider {
+        width: 100%;
+        -webkit-appearance: none;
+        height: 10px;
+        border-radius: 5px;
+        background: #d3d3d3;
+        outline: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #0066cc;
+        cursor: pointer;
+        }
+
+        .slider::-moz-range-thumb {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: #0066cc;
+        cursor: pointer;
+        }
+
+        .method-labels {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 5px;
+        font-size: 12px;
+        color: #666;
+        }
+  </style>
+  <!-- Include MathJax -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+
+  <h1>Flow to the Mode: Mode-Seeking Diffusion Autoencoders for Image Tokenization</h1>
+  <h2></h2>
+  <p class="authors">
+    Kyle Sargent, Kyle Hsu, Justin Johnson, Li Fei-Fei, Jiajun Wu
+  </p>
+
+  <h3>Introduction</h3>
+  <p>
+    Since the advent of popular visual generation frameworks like VQGAN and Latent Diffusion Models, state-ofthe-art image generation systems have generally been twostage systems that first tokenize or compress visual data into
+a lower-dimensional latent space before learning a generative model. Tokenizer training typically follows a standard
+recipe in which images are compressed and reconstructed
+subject to a combination of MSE, perceptual, and adversarial losses. Diffusion autoencoders have been proposed
+in prior work as a way to learn end-to-end perceptuallyoriented image compression, but have not yet shown stateof-the-art performance on the competitive task of ImageNet1K reconstruction. In this work, we propose FlowMo, a
+transformer-based diffusion autoencoder. FlowMo achieves
+a new state-of-the-art for image tokenization at multiple bitrates. We achieve this without using convolutions, adversarial losses, spatially-aligned 2-dimensional latent codes,
+or distilling from other tokenizers. Our key insight is that
+FlowMo training should be broken into a mode-matching
+pre-training stage and a mode-seeking post-training stage.
+We conduct extensive analysis and ablations, and we additionally train generative models atop the FlowMo tokenizer
+and verify the performance.
+  </p>
+
+
+  <h3>Method</h3>
+  <p>
+    FlowMo is implemented as a diffusion autoencoder with transformer-based encoder and decoder. The key components are described below.
+  </p>
+
+  <h4>Encoding and Quantization</h4>
+  <p>
+    The encoder maps an image <em>x</em> (with an initial latent <em>c₀</em>) to a continuous latent representation:
+  </p>
+  <div class="math-block">
+    $$\hat{c} = e_{\theta}(x, c_0)$$
+  </div>
+  <p>
+    This representation is quantized using lookup-free quantization:
+  </p>
+  <div class="math-block">
+    $$c = q(\hat{c}) = 2 \cdot \mathbf{1}[\hat{c} \geq 0] - 1$$
+  </div>
+
+  <h4>Decoding via Diffusion</h4>
+  <p>
+    The decoder models a velocity field that transforms a noisy image back to a clean one. A noisy image <em>x<sub>t</sub></em> is defined as:
+  </p>
+  <div class="math-block">
+    $$x_t = t \cdot z + (1 - t) \cdot x \quad \text{with} \quad z \sim \mathcal{N}(0, I), \quad t \in [0, 1]$$
+  </div>
+  <p>
+    The decoder then predicts:
+  </p>
+  <div class="math-block">
+    $$v = d_{\theta}(x_t, c, t)$$
+  </div>
+
+  <h4>Training – Stage 1A (Mode-Matching Pre-training)</h4>
+  <p>
+    The model is trained end-to-end with a diffusion loss:
+  </p>
+  <div class="math-block">
+    $$L_{\text{flow}} = \mathbb{E}\Big[\big\|x - z - d_{\theta}(x_t, q(e_{\theta}(x)), t)\big\|_2^2\Big]$$
+  </div>
+  <p>
+    Additional losses include a perceptual loss \( L_{\text{perc}} \) and quantization losses \( L_{\text{commit}} \) and \( L_{\text{ent}} \). The overall loss is:
+  </p>
+  <div class="math-block">
+    $$L = L_{\text{flow}} + \lambda_{\text{perc}} L_{\text{perc}} + \lambda_{\text{commit}} L_{\text{commit}} + \lambda_{\text{ent}} L_{\text{ent}}$$
+  </div>
+
+  <h4>Training – Stage 1B (Mode-Seeking Post-training)</h4>
+  <p>
+    In this stage, the encoder is fixed and the decoder is fine-tuned using a perceptual sampling loss:
+  </p>
+  <div class="math-block">
+    $$L_{\text{sample}} = \mathbb{E}\Big[d_{\text{perc}}\Big(x, \Big(d_{t_n} \circ d_{t_{n-1}} \circ \cdots \circ d_{t_1}\Big)(x)\Big]\Big)$$
+  </div>
+  <p>
+    The total loss during this stage becomes:
+  </p>
+  <div class="math-block">
+    $$L = L_{\text{flow}} + \lambda_{\text{sample}} L_{\text{sample}}$$
+  </div>
+
+  <h4>Inference</h4>
+  <p>
+    At test time, the probability flow ODE is solved using a shifted sampler. This sampler adjusts the timestep spacing so that more steps are taken at lower noise levels, thereby improving reconstruction quality.
+  </p>
+
+  <h3>Citation</h3>
+  <pre><code>
+@inproceedings{flowmo2025,
+  title={Flow to the Mode: Mode-Seeking Diffusion Autoencoders for State-of-the-Art Image Tokenization},
+  author={Sargent, Kyle and Hsu, Kyle and Johnson, Justin and Li, Fei-Fei and Wu, Jiajun},
+  booktitle={},
+  year={2025}
+}
+  </code></pre>
+
+</body>
+</html>
