@@ -1,4 +1,5 @@
 <!doctype html>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap">
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -12,7 +13,8 @@
       margin: 0 auto;
       padding: 40px 20px;
       max-width: 1200px;
-      font-family: "Georgia", serif;
+      font-size: 1.3em;
+      font-family: "Open Sans", sans-serif;
       background-color: #ffffff;
       color: #333;
       line-height: 1.6;
@@ -25,30 +27,60 @@
       text-decoration: underline;
       color: #2d4f8f;
     }
-    h1, h2 {
-      font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+    /* h1, h2 {
+      font-family: "Open Sans", sans-serif;
       font-weight: 300;
       color: #222;
     }
     h1 {
       text-align: center;
-      margin-bottom: 10px;
+      margin-bottom: 0px;
       font-size: 2.4em;
     }
     h2 {
       text-align: center;
-      margin: 0 0 40px 0;
-      font-size: 1.4em;
+      margin: 0 0 0px 0;
+      font-size: 2.0em;
       font-style: italic;
       color: #555;
-    }
+    } */
     .authors {
       text-align: center;
       font-size: 1em;
       color: #666;
       margin-bottom: 40px;
     }
+    body {
+        padding: 40px 20px;
+        margin: 0 auto;
+        max-width: 1200px; /* Adjust as needed */
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+        margin-left: 0;
+        padding-left: 0;
+    }
+
+    /* To ensure consistency, explicitly reset the margins of body paragraphs too */
+    p {
+        margin-left: 0;
+        padding-left: 0;
+    }
+    h1 {
+        font-size: 2.25em;
+        text-align: center;
+    }
     h3 {
+        font-size: 2.25em;
+        text-align: center;
+        border-bottom: 2px solid #ccc;
+    }
+    h4 {
+        font-size: 1.25em;
+        text-align: left;
+        border-bottom: 1px solid #ccc;
+    }
+    /* h3 {
       margin-top: 50px;
       border-bottom: 1px solid #ccc;
       padding-bottom: 10px;
@@ -57,15 +89,15 @@
     }
     p {
       max-width: 1100px;
-      margin: 20px auto;
+      margin: 0px auto;
       font-size: 1.1em;
-    }
+    } */
     pre, code {
       background: #e8f0fe;
       padding: 10px;
       border-radius: 5px;
       overflow-x: auto;
-      font-family: "Courier New", monospace;
+      font-family: "Open Sans", sans-serif;
     }
     .clearfix::after {
       content: "";
@@ -187,6 +219,7 @@
     <img src="images/flowmo/teaser.svg" alt="Vector Graphic" width="600" style="display: block; margin: 0 auto;">
 
   <h3>Method</h3>
+  <h4>Architecture</h4>
   <p>
     FlowMo is implemented as a diffusion autoencoder with transformer-based encoder and decoder. The architecture diagram is shown below.
   </p>
@@ -221,7 +254,7 @@
     $$v = d_{\theta}(x_t, c, t)$$
   </div>
 
-  <h4>Training – Stage 1A (Mode-Matching Pre-training)</h4>
+  <h4>Training – Stage 1A (Mode-matching pre-training)</h4>
   <p>
     First, FlowMo is trained end-to-end as a diffusion autoencoder. A diagram of the Stage 1A training is shown below:
     <img src="images/flowmo/Stage 1A.svg" alt="Vector Graphic", width=500, style="display: block; margin: 0 auto;">
@@ -237,7 +270,7 @@
     $$L = L_{\text{flow}} + \lambda_{\text{perc}} L_{\text{perc}} + \lambda_{\text{commit}} L_{\text{commit}} + \lambda_{\text{ent}} L_{\text{ent}}$$
   </div>
 
-  <h4>Training – Stage 1B (Mode-Seeking Post-training)</h4>
+  <h4>Training – Stage 1B (Mode-Seeking post-training)</h4>
   <p>
     In Stage 1B of training, the goal is to constrain the model to drop modes of the reconstruction distribution which are not perceptually close to the original image.
     A diagram is shown below:
@@ -266,6 +299,7 @@
   </p>
 
   <h3>Citation</h3>
+  <p>
   <pre><code>
 @inproceedings{flowmo2025,
   title={Flow to the Mode: Mode-Seeking Diffusion Autoencoders for State-of-the-Art Image Tokenization},
