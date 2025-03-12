@@ -60,6 +60,11 @@ pairContainer.appendChild(reconContainer);
 const sliderContainer = document.createElement('div');
 sliderContainer.classList.add('slider-container');
 const slider = document.createElement('input');
+
+sliderContainer.style.width = '50%';     // squish horizontally to half width
+sliderContainer.style.marginLeft = 'auto';  // shift it to align right
+
+width = '45%';
 slider.type = 'range';
 slider.min = '0';
 slider.max = '100';
@@ -85,6 +90,14 @@ const leftLabel = document.createElement('span');
 leftLabel.innerText = 'Original';
 const rightLabel = document.createElement('span');
 rightLabel.innerText = 'Reconstructed Image';
+// rightLabel.innerText.style.m = 'center'
+leftLabel.style.textAlign = 'center';
+rightLabel.style.textAlign = 'center';
+leftLabel.style.flex = '1';
+rightLabel.style.flex = '1';
+
+// Ensure parent container uses flex layout for proper effect
+columnLabels.style.display = 'flex';
 columnLabels.appendChild(leftLabel);
 columnLabels.appendChild(rightLabel);
 wrapper.appendChild(columnLabels);

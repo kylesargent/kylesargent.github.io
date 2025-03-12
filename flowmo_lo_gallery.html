@@ -22,12 +22,30 @@
     // Example usage: Replace these paths with your actual image URLs
     const container = document.getElementById('comparisonContainer');
     // Create 9 comparison blocks (or as many as desired)
-    for (let i = 0; i < 12; i++) {
-      const half = (i % 2 === 0) ? 'top' : 'bottom';
-      const idx = Math.floor(i / 2);
-      const original = `images/flowmo/flowmo_a_gallery/col${idx}_gt_${half}.png`;
-      const method1  = `images/flowmo/flowmo_a_gallery/col${idx}_magvit_${half}.png`;
-      const method2  = `images/flowmo/flowmo_a_gallery/col${idx}_ours_${half}.png`;
+    for (let i = 0; i < 24; i++) {
+      let half1, half2;
+
+      if (i % 4 === 0) {
+        half1 = 'top';
+        half2 = 'top';
+      }
+      else if (i % 4=== 1) {
+        half1 = 'top';
+        half2 = 'bottom';
+      }
+      else if (i % 4=== 2) {
+        half1 = 'bottom';
+        half2 = 'top';
+      }
+      else if (i % 4=== 3) {
+        half1 = 'bottom';
+        half2 = 'bottom';
+      }
+
+      const idx = Math.floor(i / 4);
+      const original = `images/flowmo/flowmo_a_gallery/col${idx}_gt_${half1}_${half2}.png`;
+      const method1  = `images/flowmo/flowmo_a_gallery/col${idx}_magvit_${half1}_${half2}.png`;
+      const method2  = `images/flowmo/flowmo_a_gallery/col${idx}_ours_${half1}_${half2}.png`;
 
       const block = createImageComparison(original, method1, method2, "OpenMagViT-V2", "FlowMo-Lo");
       container.appendChild(block);

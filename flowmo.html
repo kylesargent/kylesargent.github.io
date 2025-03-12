@@ -95,7 +95,13 @@
     for State-of-the-Art Image Tokenization</h1>
   <h2></h2>
   <p class="authors">
-    Kyle Sargent, Kyle Hsu, Justin Johnson, Li Fei-Fei, Jiajun Wu
+    <a href="https://kylesargent.github.io">Kyle Sargent<sup>1</sup></a>,
+    <a href="https://www.kylehsu.org">Kyle Hsu<sup>1</sup></a>,
+    <a href="https://web.eecs.umich.edu/~justincj">Justin Johnson<sup>2</sup></a>,
+    <a href="https://profiles.stanford.edu/fei-fei-li">Li Fei-Fei<sup>1</sup></a>, 
+    <a href="https://jiajunwu.com">Jiajun Wu<sup>1</sup></a>,
+    <br>
+    Stanford University<sup>1</sup>, University of Michigan<sup>2</sup>
   </p>
 
  
@@ -124,9 +130,9 @@
 
     <h3></h3>
     <p>
-        Please check out our galleries 
-        <a href="https://kylesargent.github.io/flowmo_lo_gallery.html">(FlowMo-Lo gallery</a>
-        <a href="https://kylesargent.github.io/flowmo_hi_gallery.html">, FlowMo-Hi gallery)</a>
+        Please check out our galleries
+        (<a href="https://kylesargent.github.io/flowmo_lo_gallery.html">FlowMo-Lo gallery</a>,
+        <a href="https://kylesargent.github.io/flowmo_hi_gallery.html">FlowMo-Hi gallery</a>)
         for more visual comparisons against baselines!
     
       </p>
@@ -138,7 +144,7 @@
     //   for (let i = 0; i < 2; i++) {
         
         idx = 0;
-        half = 'top'; 
+        half = 'top_bottom'; 
         const original = `images/flowmo/flowmo_a_gallery/col${idx}_gt_${half}.png`;
         const method1  = `images/flowmo/flowmo_a_gallery/col${idx}_magvit_${half}.png`;
         const method2  = `images/flowmo/flowmo_a_gallery/col${idx}_ours_${half}.png`;
@@ -146,7 +152,7 @@
         container.appendChild(block);
 
         idx = 1;
-        half = 'bottom'; 
+        half = 'bottom_top'; 
         const originalb = `images/flowmo/flowmo_b_gallery/col${idx}_gt_${half}.png`;
         const method1b  = `images/flowmo/flowmo_b_gallery/col${idx}_llamagen_${half}.png`;
         const method2b  = `images/flowmo/flowmo_b_gallery/col${idx}_ours_${half}.png`;
