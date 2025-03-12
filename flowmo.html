@@ -4,6 +4,8 @@
   <meta charset="utf-8">
   <title>Flow to the Mode: Mode-Seeking Diffusion Autoencoders
     for State-of-the-Art Image Tokenization</title>
+  <link rel="stylesheet" type="text/css" href="flowmo_gallery_styles.css">
+  <script src="flowmo_comparison.js"></script>
   <style>
     /* Elegant Mathematical Blog Style with Light Blue/Gray Tones */
     body {
@@ -70,126 +72,12 @@
       display: table;
       clear: both;
     }
-    .imgContainer {
-      float: left;
-      margin: 20px 20px 20px 0;
-      width: 45%;
-    }
-    img {
-      max-width: 100%;
-      height: auto;
-      display: block;
-      margin: 20px auto;
-    }
     /* Math styling */
     .math-block {
       text-align: center;
       margin: 20px 0;
       font-size: 1.1em;
     }
-    .comparison-container {
-        max-width: 1100px;
-        margin: 0 auto;
-        font-family: Arial, sans-serif;
-        }
-
-        .image-pair {
-        display: flex;
-        margin-bottom: 30px;
-        }
-
-        .image-container {
-        flex: 1;
-        position: relative;
-        overflow: hidden;
-        border: 1px solid #ccc;
-        }
-
-        .original-container,
-        .reconstructed-container {
-        max-width: 400px;
-        }
-
-        img {
-        display: block;
-        max-width: 100%;
-        }
-
-        .comparison-title {
-        text-align: center;
-        margin-bottom: 5px;
-        font-weight: bold;
-        font-size: 14px;
-        }
-
-        .reconstructed-container {
-        position: relative;
-        }
-
-        .method-one,
-        .method-two {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        }
-
-        .method-two {
-        clip-path: polygon(0% 0%, 0% 100%, 50% 100%, 50% 0%);
-        transition: clip-path 0.1s ease;
-        }
-
-        .divider {
-        position: absolute;
-        width: 4px;
-        background: #0066cc;
-        top: 0;
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 10;
-        }
-
-        .slider-container {
-        margin-top: 10px;
-        width: 400px;
-        }
-
-        .slider {
-        width: 100%;
-        -webkit-appearance: none;
-        height: 10px;
-        border-radius: 5px;
-        background: #d3d3d3;
-        outline: none;
-        }
-
-        .slider::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        appearance: none;
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        background: #0066cc;
-        cursor: pointer;
-        }
-
-        .slider::-moz-range-thumb {
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        background: #0066cc;
-        cursor: pointer;
-        }
-
-        .method-labels {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 5px;
-        font-size: 12px;
-        color: #666;
-        }
   </style>
   <!-- Include MathJax -->
   <script>
@@ -210,21 +98,7 @@
     Kyle Sargent, Kyle Hsu, Justin Johnson, Li Fei-Fei, Jiajun Wu
   </p>
 
-  <h3>Introduction</h3>
-  <p>
-    Since the advent of popular visual generation frameworks like VQGAN and Latent Diffusion Models, state-ofthe-art image generation systems have generally been twostage systems that first tokenize or compress visual data into
-a lower-dimensional latent space before learning a generative model. Tokenizer training typically follows a standard
-recipe in which images are compressed and reconstructed
-subject to a combination of MSE, perceptual, and adversarial losses. Diffusion autoencoders have been proposed
-in prior work as a way to learn end-to-end perceptuallyoriented image compression, but have not yet shown state-of-the-art performance on the competitive task of ImageNet1K reconstruction. In this work, we propose FlowMo, a
-transformer-based diffusion autoencoder. FlowMo achieves
-a new state-of-the-art for image tokenization at multiple bitrates. We achieve this without using convolutions, adversarial losses, spatially-aligned 2-dimensional latent codes,
-or distilling from other tokenizers. Our key insight is that
-FlowMo training should be broken into a mode-matching
-pre-training stage and a mode-seeking post-training stage.
-We conduct extensive analysis and ablations, and we additionally train generative models atop the FlowMo tokenizer
-and verify the performance.
-  </p>
+ 
 
     <!doctype html>
     <html lang="en">
@@ -247,16 +121,65 @@ and verify the performance.
         text-decoration: underline;
         }
     </style>
-    </head>
+
+    <h3></h3>
+    <p>
+        Please check out our galleries 
+        <a href="https://kylesargent.github.io/flowmo_lo_gallery.html">(Gallery A</a>
+        <a href="https://kylesargent.github.io/flowmo_hi_gallery.html">, Gallery B)</a>
+        for more visual comparisons against baselines!
+    
+      </p>
+    <div id="comparisonContainer" class="comparison-container"></div>
+    <script>
+      // Example usage: Replace these paths with your actual image URLs
+      const container = document.getElementById('comparisonContainer');
+      // Create 9 comparison blocks (or as many as desired)
+    //   for (let i = 0; i < 2; i++) {
+        
+        idx = 0;
+        half = 'top'; 
+        const original = `images/flowmo/flowmo_a_gallery/col${idx}_gt_${half}.png`;
+        const method1  = `images/flowmo/flowmo_a_gallery/col${idx}_magvit_${half}.png`;
+        const method2  = `images/flowmo/flowmo_a_gallery/col${idx}_ours_${half}.png`;
+        const block = createImageComparison(original, method1, method2, "OpenMagViT-V2", "FlowMo-Lo");
+        container.appendChild(block);
+
+        idx = 1;
+        half = 'bottom'; 
+        const originalb = `images/flowmo/flowmo_b_gallery/col${idx}_gt_${half}.png`;
+        const method1b  = `images/flowmo/flowmo_b_gallery/col${idx}_llamagen_${half}.png`;
+        const method2b  = `images/flowmo/flowmo_b_gallery/col${idx}_ours_${half}.png`;
+        const blockb = createImageComparison(originalb, method1b, method2b, "LlamaGen-32", "FlowMo-Hi");
+        container.appendChild(blockb);
+    </script>
+
+    <!-- </head>
     <body>
+    Check out our galleries for extended visual comparisons!
     <div class="link-container">
         <a href="https://kylesargent.github.io/flowmo_lo_gallery.html">Gallery A - comparison with OpenMagViT-V2</a>
         <a href="https://kylesargent.github.io/flowmo_hi_gallery.html">Gallery B - comparison with LlamaGen-32</a>
     </div>
     </body>
-    </html>
+    </html> -->
 
-    <img src="images/flowmo/teaser (19).svg" alt="Vector Graphic", width=600>
+    <h3>Introduction</h3>
+    <p>
+      Since the advent of popular visual generation frameworks like VQGAN and Latent Diffusion Models, state-ofthe-art image generation systems have generally been twostage systems that first tokenize or compress visual data into
+  a lower-dimensional latent space before learning a generative model. Tokenizer training typically follows a standard
+  recipe in which images are compressed and reconstructed
+  subject to a combination of MSE, perceptual, and adversarial losses. Diffusion autoencoders have been proposed
+  in prior work as a way to learn end-to-end perceptuallyoriented image compression, but have not yet shown state-of-the-art performance on the competitive task of ImageNet1K reconstruction. In this work, we propose FlowMo, a
+  transformer-based diffusion autoencoder. FlowMo achieves
+  a new state-of-the-art for image tokenization at multiple bitrates. We achieve this without using convolutions, adversarial losses, spatially-aligned 2-dimensional latent codes,
+  or distilling from other tokenizers. Our key insight is that
+  FlowMo training should be broken into a mode-matching
+  pre-training stage and a mode-seeking post-training stage.
+  We conduct extensive analysis and ablations, and we additionally train generative models atop the FlowMo tokenizer
+  and verify the performance.
+    </p>
+    <img src="images/flowmo/teaser.svg" alt="Vector Graphic" width="600" style="display: block; margin: 0 auto;">
 
   <h3>Method</h3>
   <p>
