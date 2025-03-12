@@ -206,9 +206,9 @@
       const labels = document.createElement('div');
       labels.classList.add('method-labels');
       const label1 = document.createElement('span');
-      label1.innerText = 'FlowMo-B';
+      label1.innerText = 'LlamaGen-32';
       const label2 = document.createElement('span');
-      label2.innerText = 'LlamaGen-32';
+      label2.innerText = 'FlowMo-Hi';
       labels.appendChild(label1);
       labels.appendChild(label2);
       sliderContainer.appendChild(labels);
@@ -231,9 +231,9 @@
       // Set up the slider event to update the clip path and divider position
       slider.addEventListener('input', function() {
         const value = slider.value;
-        const percentage = 100 - value;
+        const percentage = value;
         methodTwoDiv.style.clipPath = `polygon(0% 0%, 0% 100%, ${percentage}% 100%, ${percentage}% 0%)`;
-        divider.style.left = percentage + '%';
+        divider.style.left = value + '%';
       });
       
       // Initialize the slider effect
@@ -244,17 +244,19 @@
   </script>
 </head>
 <body>
-  <h1>FlowMo-B Image Comparison Gallery</h1>
+  <h1>FlowMo-Hi Image Comparison Gallery</h1>
   <!-- Gallery container -->
   <div id="comparisonContainer" class="comparison-container"></div>
   <script>
     // Example usage: Replace these paths with your actual image URLs
     const container = document.getElementById('comparisonContainer');
     // Create 9 comparison blocks (or as many as desired)
-    for (let i = 0; i < 6; i++) {
-      const original = `images/flowmo/flowmo_b_gallery/col${i}_gt.png`;
-      const method1  = `images/flowmo/flowmo_b_gallery/col${i}_llamagen.png`;
-      const method2  = `images/flowmo/flowmo_b_gallery/col${i}_ours.png`;
+    for (let i = 0; i < 12; i++) {
+      const half = (i % 2 === 0) ? 'top' : 'bottom';
+      const idx = Math.floor(i / 2);
+      const original = `images/flowmo/flowmo_b_gallery/col${idx}_gt_${half}.png`;
+      const method1  = `images/flowmo/flowmo_b_gallery/col${idx}_llamagen_${half}.png`;
+      const method2  = `images/flowmo/flowmo_b_gallery/col${idx}_ours_${half}.png`;
 
       const block = createImageComparison(original, method1, method2);
       container.appendChild(block);
