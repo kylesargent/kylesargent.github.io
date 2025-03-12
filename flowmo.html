@@ -11,7 +11,7 @@
     body {
       margin: 0 auto;
       padding: 40px 20px;
-      max-width: 1100px;
+      max-width: 1200px;
       font-family: "Georgia", serif;
       background-color: #ffffff;
       color: #333;
@@ -125,8 +125,8 @@
     <h3></h3>
     <p>
         Please check out our galleries 
-        <a href="https://kylesargent.github.io/flowmo_lo_gallery.html">(Gallery A</a>
-        <a href="https://kylesargent.github.io/flowmo_hi_gallery.html">, Gallery B)</a>
+        <a href="https://kylesargent.github.io/flowmo_lo_gallery.html">(FlowMo-Lo gallery</a>
+        <a href="https://kylesargent.github.io/flowmo_hi_gallery.html">, FlowMo-Hi gallery)</a>
         for more visual comparisons against baselines!
     
       </p>
@@ -166,13 +166,12 @@
 
     <h3>Introduction</h3>
     <p>
-      Since the advent of popular visual generation frameworks like VQGAN and Latent Diffusion Models, state-ofthe-art image generation systems have generally been twostage systems that first tokenize or compress visual data into
+      Since the advent of popular visual generation frameworks like VQGAN and Latent Diffusion Models, state-of-the-art image generation systems have generally been two-stage systems that first tokenize or compress visual data into
   a lower-dimensional latent space before learning a generative model. Tokenizer training typically follows a standard
   recipe in which images are compressed and reconstructed
   subject to a combination of MSE, perceptual, and adversarial losses. Diffusion autoencoders have been proposed
-  in prior work as a way to learn end-to-end perceptuallyoriented image compression, but have not yet shown state-of-the-art performance on the competitive task of ImageNet1K reconstruction. In this work, we propose FlowMo, a
-  transformer-based diffusion autoencoder. FlowMo achieves
-  a new state-of-the-art for image tokenization at multiple bitrates. We achieve this without using convolutions, adversarial losses, spatially-aligned 2-dimensional latent codes,
+  in prior work as a way to learn end-to-end perceptually-oriented image compression, but have not yet shown state-of-the-art performance on the competitive task of ImageNet1K reconstruction. In this work, we propose FlowMo, a
+  transformer-based diffusion autoencoder. FlowMo achieves a new state-of-the-art for image tokenization at multiple bitrates. We achieve this without using convolutions, adversarial losses, spatially-aligned 2-dimensional latent codes,
   or distilling from other tokenizers. Our key insight is that
   FlowMo training should be broken into a mode-matching
   pre-training stage and a mode-seeking post-training stage.
@@ -186,7 +185,7 @@
     FlowMo is implemented as a diffusion autoencoder with transformer-based encoder and decoder. The architecture diagram is shown below.
   </p>
 
-  <img src="images/flowmo/Arch (3).svg" alt="Vector Graphic", width=1300>
+  <img src="images/flowmo/Arch (3).svg" alt="Vector Graphic", width=1200>
 
   <!-- <h4>Encoding and Quantization</h4> -->
   <p>
@@ -219,10 +218,9 @@
   <h4>Training – Stage 1A (Mode-Matching Pre-training)</h4>
   <p>
     First, FlowMo is trained end-to-end as a diffusion autoencoder. A diagram of the Stage 1A training is shown below:
-    <img src="images/flowmo/Stage 1A.svg" alt="Vector Graphic", width=500>
-
-    The model is trained end-to-end with a diffusion loss:
+    <img src="images/flowmo/Stage 1A.svg" alt="Vector Graphic", width=500, style="display: block; margin: 0 auto;">
   </p>
+  <p>The model is trained end-to-end with a diffusion loss</p>
   <div class="math-block">
     $$L_{\text{flow}} = \mathbb{E}\Big[\big\|x - z - d_{\theta}(x_t, q(e_{\theta}(x)), t)\big\|_2^2\Big]$$
   </div>
@@ -237,9 +235,10 @@
   <p>
     In Stage 1B of training, the goal is to constrain the model to drop modes of the reconstruction distribution which are not perceptually close to the original image.
     A diagram is shown below:
-    <img src="images/flowmo/Stage 1B.svg" alt="Vector Graphic", width=550>
+    </p><p>
+    <img src="images/flowmo/Stage 1B.svg" alt="Vector Graphic", width=550, style="display: block; margin: 0 auto;">
     
-    In this stage, the encoder is fixed and the decoder is fine-tuned using a sample-level perceptual loss:
+</p><p>In this stage, the encoder is fixed and the decoder is fine-tuned using a sample-level perceptual loss:
   </p>
   <div class="math-block">
     $$L_{\text{sample}} = \mathbb{E}\Big[d_{\text{perc}}\Big(x, \Big(d_{t_n} \circ d_{t_{n-1}} \circ \cdots \circ d_{t_1}\Big)(x)\Big]\Big)$$
