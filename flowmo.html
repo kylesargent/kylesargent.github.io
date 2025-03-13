@@ -216,28 +216,38 @@
   We conduct extensive analysis and ablations, and we additionally train generative models atop the FlowMo tokenizer
   and verify the performance.
     </p>
-    <img src="images/flowmo/teaser.svg" alt="Vector Graphic" width="600" style="display: block; margin: 0 auto;">
+    <figure style="text-align: left;">
+        <img src="images/flowmo/teaser (24).png" alt="Vector Graphic" width="600" style="display: block; margin: 0 auto;">
+        <figcaption>Figure 1: 
+            When trained for reconstruction at a low bitrate
+             (FlowMo-Lo) or high bitrate (FlowMo-Hi), FlowMo achieves
+            state-of-the art image tokenization performance. Moreover, FlowMo is a transformer-based
+            diffusion autoencoder which does not use convolutions, adversarial losses, or proxy objectives from auxiliary tokenizers.
+        </figcaption>
+      </figure>
 
   <h3>Method</h3>
+    We'll briefly outline the architecture and training stages below. For an in-depth summary, check out our paper!
+
   <h4>Architecture</h4>
   <p>
     FlowMo is implemented as a diffusion autoencoder with transformer-based encoder and decoder. The architecture diagram is shown below.
   </p>
 
-  <img src="images/flowmo/Arch (3).svg" alt="Vector Graphic", width=1200>
+  <img src="images/flowmo/arch_v2.png" alt="Vector Graphic", width=1200>
 
   <!-- <h4>Encoding and Quantization</h4> -->
   <p>
     The encoder maps an image <em>x</em> (with an initial latent <em>c₀</em>) to a continuous latent representation:
   </p>
   <div class="math-block">
-    $$\hat{c} = e_{\theta}(x, c_0)$$
+    $$\hat{c} = e_{\theta}(x, c_0)~,$$
   </div>
   <p>
-    This representation is quantized using lookup-free quantization:
+    which is quantized using lookup-free quantization, as
   </p>
   <div class="math-block">
-    $$c = q(\hat{c}) = 2 \cdot \mathbf{1}[\hat{c} \geq 0] - 1$$
+    $$c = q(\hat{c}) = 2 \cdot \mathbf{1}[\hat{c} \geq 0] - 1~.$$
   </div>
 
   <!-- <h4>Decoding via Diffusion</h4> -->
@@ -245,56 +255,56 @@
     The decoder models a velocity field that transforms a noisy image back to a clean one. A noisy image <em>x<sub>t</sub></em> is defined as:
   </p>
   <div class="math-block">
-    $$x_t = t \cdot z + (1 - t) \cdot x \quad \text{with} \quad z \sim \mathcal{N}(0, I), \quad t \in [0, 1]$$
+    $$x_t = t \cdot z + (1 - t) \cdot x \quad \text{with} \quad z \sim \mathcal{N}(0, I), \quad t \in [0, 1] ~ .$$
   </div>
   <p>
     The decoder then predicts:
   </p>
   <div class="math-block">
-    $$v = d_{\theta}(x_t, c, t)$$
+    $$v = d_{\theta}(x_t, c, t)~.$$
   </div>
 
-  <h4>Training – Stage 1A (Mode-matching pre-training)</h4>
+  <h4>Mode-matching pre-training</h4>
   <p>
     First, FlowMo is trained end-to-end as a diffusion autoencoder. A diagram of the Stage 1A training is shown below:
-    <img src="images/flowmo/Stage 1A.svg" alt="Vector Graphic", width=500, style="display: block; margin: 0 auto;">
+    <img src="images/flowmo/stage_1a.png" alt="Vector Graphic", width=600, style="display: block; margin: 0 auto;">
   </p>
   <p>The model is trained end-to-end with a diffusion loss</p>
   <div class="math-block">
-    $$L_{\text{flow}} = \mathbb{E}\Big[\big\|x - z - d_{\theta}(x_t, q(e_{\theta}(x)), t)\big\|_2^2\Big]$$
+    $$\mathcal{L}_{\text{flow}} = \mathbb{E}\Big[\big\|x - z - d_{\theta}(x_t, q(e_{\theta}(x)), t)\big\|_2^2\Big]~.$$
   </div>
   <p>
-    Additional losses include a perceptual loss \( L_{\text{perc}} \) and quantization losses \( L_{\text{commit}} \) and \( L_{\text{ent}} \). The overall loss is:
+    Additional losses include a perceptual loss \( \mathcal{L}_{\text{perc}} \) and quantization losses \( \mathcal{L}_{\text{commit}} \) and \( \mathcal{L}_{\text{ent}} \). The overall loss is:
   </p>
   <div class="math-block">
-    $$L = L_{\text{flow}} + \lambda_{\text{perc}} L_{\text{perc}} + \lambda_{\text{commit}} L_{\text{commit}} + \lambda_{\text{ent}} L_{\text{ent}}$$
+    $$\mathcal{L}_{\text{flow}} + \lambda_{\text{perc}} \mathcal{L}_{\text{perc}} + \lambda_{\text{commit}} \mathcal{L}_{\text{commit}} + \lambda_{\text{ent}} \mathcal{L}_{\text{ent}}~.$$
   </div>
 
-  <h4>Training – Stage 1B (Mode-Seeking post-training)</h4>
+  <h4>Mode-seeking post-training</h4>
   <p>
     In Stage 1B of training, the goal is to constrain the model to drop modes of the reconstruction distribution which are not perceptually close to the original image.
     A diagram is shown below:
     </p><p>
-    <img src="images/flowmo/Stage 1B.svg" alt="Vector Graphic", width=550, style="display: block; margin: 0 auto;">
+    <img src="images/flowmo/stage_1b.png" alt="Vector Graphic", width=650, style="display: block; margin: 0 auto;">
     
 </p><p>In this stage, the encoder is fixed and the decoder is fine-tuned using a sample-level perceptual loss:
   </p>
   <div class="math-block">
-    $$L_{\text{sample}} = \mathbb{E}\Big[d_{\text{perc}}\Big(x, \Big(d_{t_n} \circ d_{t_{n-1}} \circ \cdots \circ d_{t_1}\Big)(x)\Big]\Big)$$
+    $$\mathcal{L}_{\text{sample}} = \mathbb{E}\Big[d_{\text{perc}}\Big(x, \Big(d_{t_n} \circ d_{t_{n-1}} \circ \cdots \circ d_{t_1}\Big)(x)\Big]\Big)~.$$
   </div>
   <p>
     The total loss during this stage becomes:
   </p>
   <div class="math-block">
-    $$L = L_{\text{flow}} + \lambda_{\text{sample}} L_{\text{sample}}$$
+    $$\mathcal{L}_{\text{flow}} + \lambda_{\text{sample}} \mathcal{L}_{\text{sample}}~.$$
   </div>
 
   <h3>Conclusion</h3>
   <p>
     Please check out our paper for detailed comparisons and analysis, and our galleries 
-    <a href="https://kylesargent.github.io/flowmo_lo_gallery.html">(Gallery A</a>
-    <a href="https://kylesargent.github.io/flowmo_hi_gallery.html">, Gallery B)</a>
-    for interactive comparisons!
+    <a href="https://kylesargent.github.io/flowmo_lo_gallery.html">(FlowMo-Lo</a>
+    <a href="https://kylesargent.github.io/flowmo_hi_gallery.html">, FlowMo-Hi)</a>
+    for interactive comparisons. Stay tuned for code and checkpoints!
 
   </p>
 
