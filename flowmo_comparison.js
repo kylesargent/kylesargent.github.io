@@ -105,6 +105,7 @@ function createImageComparison(originalPath, method1Path, method2Path, Method1Na
     methodOneTitle.style.color = 'white';
     methodOneTitle.style.padding = '5px 10px';
     methodOneTitle.style.borderRadius = '3px';
+    methodOneTitle.style.fontSize = '13px';  // Set the font size here
     methodOneTitle.style.zIndex = '2';
     
     // Method 2 title overlay - separate from method div to control occlusion
@@ -118,6 +119,7 @@ function createImageComparison(originalPath, method1Path, method2Path, Method1Na
     methodTwoTitle.style.color = 'white';
     methodTwoTitle.style.padding = '5px 10px';
     methodTwoTitle.style.borderRadius = '3px';
+    methodTwoTitle.style.fontSize = '13px';  // Set the font size here
     methodTwoTitle.style.zIndex = '2';
 
     // Add method divs to the method images container
