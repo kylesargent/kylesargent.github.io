@@ -1,4 +1,5 @@
 <!doctype html>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap">
 <html lang="en">
 <head>
@@ -19,13 +20,44 @@
       color: #333;
       line-height: 1.6;
     }
+    .button {
+        display: inline-block;
+        padding: 2px 10px;
+        border: none;
+        cursor: pointer;
+        text-decoration: none;
+    }
+    .is-dark {
+        background-color: #333;
+        color: white;
+    }
+    .is-rounded {
+        border-radius: 30px;
+    }
+    .icon {
+        margin-right: 5px;
+    }
     a {
       text-decoration: none;
       color: #3a6ea5;
     }
     a:hover {
-      text-decoration: underline;
-      color: #2d4f8f;
+      /* text-decoration: none; */
+      /* color: #2d4f8f; */
+    }
+    a {
+      /* text-decoration: none; */
+      color: #22b;
+    }
+    a:hover {
+      /* text-decoration: none; */
+      /* color: #22b; */
+    }
+    a:hover > span.icon{
+      text-decoration: none
+    }
+    a:hover img {
+      opacity: .5;
     }
     /* h1, h2 {
       font-family: "Open Sans", sans-serif;
@@ -136,6 +168,26 @@
     Stanford University<sup>1</sup>, University of Michigan<sup>2</sup>
   </p>
 
+  <h2 align="center" style="font-size: 24px;">
+    <span class="link-block">
+      <a href="https://www.arxiv.org/abs/2503.11056"
+         class="external-link button is-normal is-rounded is-dark">
+        <span class="icon">
+          <i class="fas fa-file-pdf"></i>
+        </span>
+        <span>Paper</span>
+      </a>
+    </span>
+    <span class="link-block">
+      <a href="https://github.com/kylesargent/"
+         class="external-link button is-normal is-rounded is-dark">
+        <span class="icon">
+          <i class="fab fa-github"></i>
+        </span>
+        <span>Code (coming soon!)</span>
+      </a>
+    </span>
+  </h2>
  
 
     <!doctype html>
@@ -309,11 +361,14 @@
   </p>
 
   <h3>Citation</h3>
-  <pre><code>@inproceedings{flowmo2025,
-    title={Flow to the Mode: Mode-Seeking Diffusion Autoencoders for State-of-the-Art Image Tokenization},
-    author={Sargent, Kyle and Hsu, Kyle and Johnson, Justin and Li, Fei-Fei and Wu, Jiajun},
-    booktitle={},
-    year={2025}
+  <pre><code>@misc{sargent2025flowmodemodeseekingdiffusion,
+      title={Flow to the Mode: Mode-Seeking Diffusion Autoencoders for State-of-the-Art Image Tokenization}, 
+      author={Kyle Sargent and Kyle Hsu and Justin Johnson and Li Fei-Fei and Jiajun Wu},
+      year={2025},
+      eprint={2503.11056},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2503.11056}, 
 }</code></pre>
 
 </body>
