@@ -43,7 +43,27 @@
       margin-right: 8px;
     }
     .career-item {
-      line-height: 24px;
+      display: flex;
+      align-items: center;     /* vertical‑center icon + first line of text */
+      margin-bottom: 1em;
+    }
+
+    /* icon column */
+    .career-item .bullet {
+      flex-shrink: 0;
+      margin-right: 12px;
+    }
+
+    /* date column – fixed width so all “desc” always start at the same x */
+    .career-item .career-date {
+      flex-shrink: 0;
+      width: 160px;           /* tweak so the widest date fits */
+      font-weight: bold;
+    }
+
+    /* description column – takes up the rest of the line */
+    .career-item .career-desc {
+      flex: 1;
     }
   </style>
 
@@ -88,21 +108,76 @@
         <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;">
           <tr>
             <td style="padding:2.5%;width:100%;vertical-align:middle">
+              <h2>News</h2>
+              <p class="career-item">
+                <span class="career-date">April 2025:</span>
+                <span class="career-desc">
+                  Invited talk at Amazon Frontier AI.
+                </span>
+              </p>
+              <p class="career-item">
+                <span class="career-date">March 2025:</span>
+                <span class="career-desc">
+                  We released our preprint, <a href="https://kylesargent.github.io/flowmo">FlowMo</a>.
+                </span>
+              </p>
+              <p class="career-item">
+                <span class="career-date">December 2024:</span>
+                <span class="career-desc">
+                  We released our first demo at <a href=https://www.worldlabs.ai/blog>WorldLabs</a>.
+                </span>
+              </p>
+              <!-- <p><strong>April 2024:</strong>
+              Invited talk at Amazon Frontier AI.
+              </p>
+              <p><strong>December 2024:</strong>&nbsp;&nbsp;&nbsp
+                
+              </p> -->
+            </table>
+
+        <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;">
+          <tr>
+            <td style="padding:2.5%;width:100%;vertical-align:middle">
               <h2>Industry experience</h2>
               <p class="career-item">
-                <img class="bullet" width="50" height="50" src="/images/worldlabs.jpg" alt="" />
-                &nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp<strong>June 2024–present:</strong>&nbsp;&nbsp;&nbsp
-                Intern / part‑time student researcher at <a href=https://www.worldlabs.ai/>World Labs</a>, working on large generative models.
+                <img
+                  class="bullet"
+                  width="50" height="50"
+                  src="/images/worldlabs.jpg"
+                  alt=""
+                />
+                <span class="career-date">June 2024–present:</span>
+                <span class="career-desc">
+                  Intern / part‑time student researcher at
+                  <a href="https://www.worldlabs.ai/">World Labs</a>,
+                  working on large generative models.
+                </span>
               </p>
+              
               <p class="career-item">
-                <img class="bullet" width="50" height="50" src="/images/deepmind.png" alt="" />
-                &nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp<strong>September 2022-June 2024:</strong>&nbsp;&nbsp;&nbsp
-                Student researcher at Google Deepmind / Google Research.
+                <img
+                  class="bullet"
+                  width="50" height="50"
+                  src="/images/deepmind.png"
+                  alt=""
+                />
+                <span class="career-date">September 2022–June 2024:</span>
+                <span class="career-desc">
+                  Student researcher at Google DeepMind / Google Research.
+                </span>
               </p>
+              
               <p class="career-item">
-                <img class="bullet" width="50" height="50" src="/images/google.png" alt="" />
-                &nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp<strong>October 2020-August 2022:</strong>&nbsp;&nbsp;&nbsp
-                AI Resident at Google Research.
+                <img
+                  class="bullet"
+                  width="50" height="50"
+                  src="/images/google.png"
+                  alt=""
+                />
+                <span class="career-date">October 2020–August 2022:</span>
+                <span class="career-desc">
+                  AI Resident at Google Research.
+                </span>
               </p>
             </table>
 
