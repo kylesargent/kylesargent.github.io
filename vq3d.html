@@ -1,183 +1,213 @@
 <!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>VQ3D: Learning a 3D-Aware Generative Model on ImageNet</title>
-  <style>
-    /* Elegant Mathematical Blog Style with Light Blue/Gray Tones */
-    body {
-      margin: 0 auto;
-      padding: 40px 20px;
-      max-width: 900px;
-      font-family: "Georgia", serif;
-      background-color: #f0f4f8; /* subtle light blue-gray background */
-      color: #333;
-      line-height: 1.6;
-    }
-    a {
-      text-decoration: none;
-      color: #3a6ea5;
-    }
-    a:hover {
-      text-decoration: underline;
-      color: #2d4f8f;
-    }
-    h1, h2 {
-      font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
-      font-weight: 300;
-      color: #222;
-    }
-    h1 {
-      text-align: center;
-      margin-bottom: 10px;
-      font-size: 2.4em;
-    }
-    h2 {
-      text-align: center;
-      margin: 0 0 40px 0;
-      font-size: 1.4em;
-      font-style: italic;
-      color: #555;
-    }
-    .authors {
-      text-align: center;
-      font-size: 1em;
-      color: #666;
-      margin-bottom: 40px;
-    }
-    h3 {
-      margin-top: 50px;
-      border-bottom: 1px solid #ccc;
-      padding-bottom: 10px;
-      font-weight: 300;
-      color: #222;
-    }
-    p {
-      max-width: 800px;
-      margin: 20px auto;
-      font-size: 1.1em;
-    }
-    img {
-      max-width: 100%;
-      height: auto;
-      display: block;
-      margin: 20px auto;
-    }
-    .imgContainer {
-      float: left;
-      margin-right: 20px;
-      margin-bottom: 20px;
-      width: 45%;
-    }
-    .clearfix::after {
-      content: "";
-      display: table;
-      clear: both;
-    }
-    pre, code {
-      background: #e8f0fe;
-      padding: 10px;
-      border-radius: 5px;
-      overflow-x: auto;
-      font-family: "Courier New", monospace;
-    }
-  </style>
-</head>
-<body>
-
-  <h1>VQ3D: Learning a 3D-Aware Generative Model on ImageNet</h1>
-  <h2>ICCV2023 &mdash; Oral presentation, Best paper finalist</h2>
-  <p class="authors">
-    Kyle Sargent, Jing Yu Koh, Han Zhang, Huiwen Chang, Charles Herrmann, Pratul Srinivasan, Jiajun Wu, Deqing Sun
-  </p>
-
-  <h3>Introduction</h3>
-  <p>
-    VQ3D is a two-stage autoencoder based on ViT-VQGAN. We introduce a novel 3D-aware NeRF-based decoder, incorporating depth losses and adversarial supervision on both primary and novel views to encourage the learning of 3D-aware representations.
-  </p>
-  <p>
-    The resulting model offers multiple capabilities. Stage 1 employs an encoder-decoder architecture that can encode unseen, unposed RGB images and generate a NeRF with consistent depth and high-quality novel views. Stage 2 functions as a fully generative model for 3D-aware images. For technical details, please consult our <a href="https://arxiv.org/abs/2302.06833">paper</a>. Thank you!
-  </p>
-
-  <h3>Stage 2: Example Generated 3D Images</h3>
-  <p>
-    Below are generated 3D images accompanied by normalized disparity. Our method is capable of training on and generating examples from the full ImageNet dataset, which includes 1.2 million training images spanning 1000 classes.
-  </p>
-  <img src="videos/vq3d/fully_generated.gif" alt="Generated 3D Images">
-
-  <h3>Stage 1: Example Single-View 3D Reconstructions with Novel Views</h3>
-  <p>
-    Here, we present results that manipulate real images to generate novel views. Our model achieves high-quality reconstruction at the canonical viewpoint along with plausible novel views.
-  </p>
-  <img src="videos/vq3d/novel_views_webpage_3.gif" alt="Single-View 3D Reconstructions">
-
-  <h3>Example Object Manipulations Within a Scene</h3>
-  <p>
-    Stage 1 can convert a single RGB input image into a NeRF, and then render novel views while adding objects. The model requires only a single unposed RGB image (unseen during training) to create a NeRF in one forward pass. The resulting scene exhibits plausible geometry, occlusion, and disocclusion.
-  </p>
-  <div class="clearfix">
-    <div class="imgContainer">
-      <img src="videos/vq3d/manip_orig.png" alt="Original Image">
-      <p align="center">Original Image</p>
-    </div>
-    <div class="imgContainer">
-      <img src="videos/vq3d/manip.gif" alt="Rendered Novel Views with Additional Object">
-      <p align="center">Rendered Novel Views with Additional Object</p>
-    </div>
-  </div>
-
-  <h3>Example Generated Scenes from CompCars</h3>
-  <p>
-    Our model also demonstrates strong performance on the CompCars dataset.
-  </p>
-  <img src="videos/vq3d/compcars.gif" alt="Generated Scenes from CompCars">
-
-  <h3>Example Interpolation Between Two Images</h3>
-  <p>
-    Stage 1 computes two NeRFs from two RGB images and interpolates between them. Note that while vector-quantized models do not inherently guarantee high-quality interpolation, semantically aware interpolation remains a promising area for future research.
-  </p>
-  <div class="clearfix">
-    <div class="imgContainer">
-      <img src="videos/vq3d/interp_start_orig.png" alt="Input Start Image">
-      <p align="center">Input Start Image</p>
-    </div>
-    <div class="imgContainer">
-      <img src="videos/vq3d/interp_end_orig.png" alt="Input End Image">
-      <p align="center">Input End Image</p>
-    </div>
-    <div class="imgContainer" style="width: 90%;">
-      <img src="videos/vq3d/interp.gif" alt="Interpolation">
-      <p align="center">Interpolation</p>
-    </div>
-  </div>
-
-  <h3>Importance of Pointwise Depth Loss</h3>
-  <p>
-    Our depth loss constrains the NeRF disparity to closely match the pseudo-ground truth disparity on a pointwise basis. This supervision focuses on the pointwise volumetric rendering weights rather than the accumulated disparity. The images below illustrate the effect of training with a depth loss on accumulated disparity (left) versus our pointwise depth loss (right).
-  </p>
-  <div class="clearfix">
-    <div class="imgContainer">
-      <img src="videos/vq3d/depth_abl_accum.gif" alt="Trained with Depth Loss on Accumulated Depth">
-      <p align="center">Trained with Depth Loss on Accumulated Depth</p>
-    </div>
-    <div class="imgContainer">
-      <img src="videos/vq3d/depth_abl_pointwise.gif" alt="Trained with Our Pointwise Depth Loss">
-      <p align="center">Trained with Our Pointwise Depth Loss</p>
-    </div>
-  </div>
-
-  <h3>Citation</h3>
-  <pre><code>
-@InProceedings{vq3d,
-  author = {
-     Sargent, Kyle and Koh, Jing Yu and Zhang, Han and Chang, Huiwen
-     and Herrmann, Charles and Srinivasan, Pratul and Wu, Jiajun and Sun, Deqing
-  },
-  title = {{VQ3D}: Learning a {3D}-Aware Generative Model on {ImageNet}},
-  booktitle = {Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)},
-  year = {2023}
+<meta charset=utf-8>
+<title>VQ3D: Learning a 3D-Aware Generative Model on ImageNet</title>
+<style>
+body {
+  margin: 0 auto;
+  padding: 30px 20px 50px;
+  font-family: sans-serif;
+  background: #ffffff;
+  color: #222;
+  max-width: 900px;
 }
-  </code></pre>
+p {
+  line-height: 150%;
+  max-width: 45em;
+  max-width: 900px;
+}
+h1, h2 {
+  font-weight: 200;
+}
+h2 a {
+  color: #000;
+}
 
-</body>
-</html>
+h3 {
+  margin-top: 40px;
+}
+a {
+  text-decoration: none;
+  color: #22b;
+}
+a:hover {
+  text-decoration: underline;
+  color: #22b;
+}
+a:hover img {
+  opacity: .5;
+}
+.paper img { background: #888; }
+.video img {
+  border-radius: 6px;
+  background: #000;
+}
+h1 span {
+  font-size: 90%;
+  line-height: 1.5em;
+}
+h1 span::before { content: "("; }
+h1 span::after { content: ")"; }
+h1 span::before, h1 span::after {
+  vertical-align: .06em;
+}
+h2 span {
+  line-height: 2em;
+}
+em {
+  color: #333;
+  font-weight: bold;
+  font-style: normal;
+}
+.teaser {
+  max-width: 45em;
+  margin: 40px 0 60px 0;
+  white-space: nowrap;
+  position: relative;
+}
+.teaser .imgs .full {
+  width: 100%;
+}
+.teaser .imgs .center {
+  position: absolute;
+  width: 32%;
+  top: -3%;
+  left: 34%;
+}
+.teaser .labels span {
+  display: inline-block;
+  width: 33%;
+  text-align: center;
+  padding-top: 10px;
+}
+.imgContainer{
+    float:left;
+}
+.bibtex {
+  white-space: pre;
+  font-family: monospace;
+  line-height: 150%;
+  background: #fff;
+  padding: 10px;
+  display: inline-block;
+  border-radius: 4px;
+}
+.crow > * {
+  vertical-align: middle;
+  margin-right: 20px;
+}
+a.img {
+  display: inline-block;
+}
+.links {
+  display: inline-block;
+  line-height: 150%;
+  padding: 8px 0;
+}
+.links a {
+  padding: 0 3px;
+}
+.examples {
+  padding: 10px 0;
+  max-width: 50em;
+}
+.examples img {
+  display: inline-block;
+  width: 192px;
+  height: 108px;
+}
+
+</style>
+<h1>VQ3D: Learning a 3D-Aware Generative Model on ImageNet<br>
+
+<h1 align="center"><i>ICCV2023</i> <span style="color:red;">Oral presentation</span> </span><span style="color:#e75480;">Best paper finalist</span> <br>
+
+<h2>Kyle Sargent, Jing Yu Koh, Han Zhang, Huiwen Chang, Charles Herrmann, Pratul Srinivasan, Jiajun Wu, Deqing Sun</h2>
+
+<!-- <img src="data:image/png;base64,"> -->
+
+<h3>Introduction</h3>
+<p>VQ3D is a 2-stage autoencoder based on ViT-VQGAN. We use a novel 3D-aware NeRF-based decoder as well as depth losses and adversarial supervision on main and novel views to encourage learning of 3D-aware representations.
+
+    The resulting model has multiple capabilities. Stage 1 of our model is an encoder-decoder architecture which can encode unseen, unposed RGB images and produce a NeRF with consistent depth and high-quality novel views. Stage 2 is a fully generative model
+    of 3D-aware images. For technical details, please consult our <a href="https://arxiv.org/abs/2302.06833">paper</a>. Thanks! 
+</p>
+&nbsp
+
+<h3>Stage 2: Example generated 3D images:</h3>
+We show generated 3D images as well as normalized disparity below. Our method is capable of training on and then generating examples from the full ImageNet dataset of 1.2 million training images and 1000 classes.<br>
+&nbsp
+<img width="900" height="300" src="videos/vq3d/fully_generated.gif">
+
+<h3>Stage 1: Example single-view 3D reconstructions with novel views:</h3>
+We show results from manipulating real images to generate novel views. Our model achieves good reconstruction at the canonical viewpoint and plausible novel views.<br>
+&nbsp
+<img width="900" height="300" src="videos/vq3d/novel_views_webpage_3.gif">
+&nbsp
+
+<h3>Example object manipulations within a scene:</h3>
+Our Stage 1 can convert a single RGB input image into a NeRF, and then render novel views while manipulating adding objects. The only input to the model is a single unposed RGB image which is unseen during training. The NeRF is created without any optimization in a single forward pass of our network. Still, the reconstructed scene has plausible geometry, occlusion, and disoccluded pixels.<br>
+&nbsp
+<div class="image123">
+    <div class="imgContainer">
+        <img width="450" height="450" src="videos/vq3d/manip_orig.png">
+        <p align="center">Original Image</p>
+    </div>
+    <div class="imgContainer">
+        <img width="450" height="450" src="videos/vq3d/manip.gif">
+        <p align="center">Rendered novel views with additional object</p>
+    </div>
+</div>
+&nbsp
+
+<h3>Example generated scenes from CompCars:</h3>
+Our model also achieves good performance on CompCars.<br>
+&nbsp
+<img width="900" height="450" src="videos/vq3d/compcars.gif">
+&nbsp
+
+<h3>Example interpolation between two images:</h3>
+Our Stage 1 can convert compute two NeRFs from two RGB images, and then interpolate between them. Vector-quantized models do not guarantee high quality interpolation, and achieving high-quality semantically aware interpolation is a direction for future work.<br>
+&nbsp
+<div class="image123">
+    <div class="imgContainer">
+        <img width="225" height="225" src="videos/vq3d/interp_start_orig.png">
+        <p align="center">Input start image</p>
+    </div>
+    <div class="imgContainer">
+        <img width="225" height="225" src="videos/vq3d/interp_end_orig.png">
+        <p align="center">Input end image</p>
+    </div>
+    <div class="imgContainer">
+        <img width="450" height="225" src="videos/vq3d/interp.gif">
+        <p align="center">Interpolation</p>
+    </div>
+</div>
+&nbsp
+
+
+<h3>Importance of pointwise depth loss</h3>
+Our depth loss constraints the NeRF disparity to lie close to the pseudo-GT disparity in a pointwise fashion. It supervises the pointwise volumetric rendering weights rather than the accumulated disparity. Below we see the affect of training with a depth loss on the accumulated disparity (left) versus our depth loss on the pointwise volumetric rendering weights (right). <br>
+&nbsp
+<div class="image123">
+    <div class="imgContainer">
+        <img width="450" height="225" src="videos/vq3d/depth_abl_accum.gif">
+        <p align="center">Trained with depth loss on accumulated depth</p>
+    </div>
+    <div class="imgContainer">
+        <img width="450" height="225" src="videos/vq3d/depth_abl_pointwise.gif">
+        <p align="center">Trained with our pointwise depth loss</p>
+    </div>
+</div>
+&nbsp
+
+<h3>Citation</h3>
+<pre><code>
+@InProceedings{vq3d,
+    author = {
+       Sargent, Kyle and Koh, Jing Yu and Zhang, Han and Huiwen Chang
+       and Charles Herrmann and Pratul Srinivasan and Jiajun Wu and Deqing Sun},
+    title = {{VQ3D}: Learning a {3D}-Aware Generative Model on {ImageNet}},
+    booktitle = {Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)},
+    year = {2023}
+  }
+</code></pre>

@@ -4,6 +4,7 @@ title:  "WonderJourney: Going from Anywhere to Everywhere"
 date:   2021-10-25 00:00:00 +00:00
 video: /videos/thumbnail_wonderjourney.mp4
 venue: <em>CVPR</em>, 2024.
+category: Large Generative Models with 3D Controls
 categories: research
 authors: "Hong-Xing &ldquo;Koven&rdquo; Yu, Haoyi Duan, Junhwa Hur, <strong>Kyle Sargent</strong>, Michael Rubinstein, William T. Freeman, Forrester Cole, Deqing Sun, Noah Snavely, Jiajun Wu, Charles Herrmann"
 arxiv: https://arxiv.org/pdf/2312.03884

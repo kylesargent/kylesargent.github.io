@@ -4,6 +4,7 @@ title:  "NAVI: Category-Agnostic Image Collections with High-Quality 3D Shape an
 date:   2021-06-01 00:00:00 +00:00
 image: /images/NAVI_teaser_1.png
 venue: <em> NeurIPS</em>, 2023.
+category: Misc
 categories: research
 authors: "Varun Jampani*, Kevis-Kokitsi Maninis*, Andreas Engelhardt, Arjun Karpur, Karen Truong, <strong>Kyle Sargent</strong>, Stefan Popov, Andre Araujo, Ricardo Martin-Brualla, Kaushal Patel, Daniel Vlasic, Vittorio Ferrari, Ameesh Makadia, Ce Liu, Yuanzhen Li, Howard Zhou"
 arxiv: https://arxiv.org/abs//2306.09109

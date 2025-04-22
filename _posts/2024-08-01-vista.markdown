@@ -4,6 +4,7 @@ title:  "View-Invariant Policy Learning via Zero-Shot Novel View Synthesis"
 date:   2021-10-25 00:00:00 +00:00
 image: /images/vista.png
 venue: <em>CORL</em>, 2024.
+category: Large Generative Models with 3D Controls,Visual Robustness
 categories: research
 authors: "Stephen Tian, Blake Wulfe, <strong>Kyle Sargent</strong>, Katherine Liu, Sergey Zakharov, Vitor Guizilini, Jiajun Wu"
 arxiv: https://arxiv.org/abs/2409.03685

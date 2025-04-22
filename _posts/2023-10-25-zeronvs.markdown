@@ -4,6 +4,7 @@ title:  "ZeroNVS: Zero-Shot 360-Degree View Synthesis from a Single Real Image"
 date:   2021-10-25 00:00:00 +00:00
 video: /videos/thumbnail_zeronvs.mp4
 venue: <em>CVPR</em>, 2024.
+category: Large Generative Models with 3D Controls
 categories: research
 authors: "<strong>Kyle Sargent</strong>, Zizhang Li, Tanmay Shah, Charles Herrmann, Hong-Xing &ldquo;Koven&rdquo; Yu, Yunzhi Zhang, Eric Ryan Chan, Dmitry Lagun, Li Fei-Fei, Deqing Sun, Jiajun Wu"
 arxiv: https://arxiv.org/abs/2310.17994

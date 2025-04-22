@@ -4,6 +4,7 @@ title:  "Generative Camera Dolly: Extreme Monocular Dynamic Novel View Synthesis
 date:   2021-10-25 00:00:00 +00:00
 video: /videos/gcd.mp4
 venue: <em>ECCV</em>, 2024.
+category: Large Generative Models with 3D Controls
 categories: research
 authors: "Basile Van Hoorick, Rundi Wu, Ege Ozguroglu, <strong>Kyle Sargent</strong>, Ruoshi Liu, Pavel Tokmakov, Achal Dave, Changxi Zheng, Carl Vondrick"
 arxiv: https://arxiv.org/abs/2405.14868

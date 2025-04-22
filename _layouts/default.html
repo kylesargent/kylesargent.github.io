@@ -13,9 +13,34 @@
   <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
   <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css">
   <meta name="google-site-verification" content="google6a0215df3331a32a.html" />
+
+  <style>
+    #filters { text-align:center; margin-bottom:1em; }
+
+    .filter-btn {
+      margin: 0 .25em;
+      padding: .5em 1em;
+      border: none;
+      border-radius: .25em;
+      background: #3498db;
+      color: #fff;
+      font-weight: 500;
+      text-transform: capitalize;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      transition: background 0.2s, transform 0.1s;
+      cursor: pointer;
+    }
+    .filter-btn:hover {
+      background: #2980b9;
+      transform: translateY(-1px);
+    }
+    .filter-btn.active {
+      background: #2980b9;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+    }
+  </style>
+
 </head>
-
-
 
 <body>
   <table style="width:100%;max-width:800px;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;">
@@ -47,7 +72,7 @@
               </p>
             </td>
             <td style="padding:2.5%;width:40%;max-width:40%">
-              <img style="width:100%;max-width:100%" alt="profile photo" src="/images/IMG_3011_tn.jpg">
+              <img style="width:80%;max-width:100%" alt="profile photo" src="/images/headshot.png">
             </td>
           </tr>
         </table>
@@ -57,91 +82,103 @@
             <td style="padding:2.5%;width:100%;vertical-align:middle">
               <h2>Research</h2>
               <p>
-                I work in computer vision. My main areas of focus are generative models, visual compression/tokenization, 3D reconstruction, and novel view synthesis.
-              </p>
-            </td>
-          </tr>
-        </table>
-        <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;">
+                My research area is computer vision. My overall goal is to build <i>visual intelligence</i>. I am currently exploring several research areas:
+                <ul>
+                  <li><strong>Visual tokenization</strong> technique to compress visual data effectively and learn interesting representations, such as in our latest preprint <a href="https://kylesargent.github.io/flowmo">FlowMo</a>.
+                  </li>
+                  <br>
+                  <li><strong>Adding 3D controls to large generative models</strong> such as in my CVPR 2024 paper <a href="https://kylesargent.github.io/zeronvs">ZeroNVS</a>, or my ICCV 2023 first-authored Best Paper Finalist, <a href="https://kylesargent.github.io/vq3d">VQ3D</a>.
+                  </li>
+                  <br>
 
+                  <li><strong>Visual robustness</strong> techniques such as my CVPR 2022 co-first-authored Best Paper Finalist, <a href="https://pyramidat.github.io/">Pyramid Adversarial Training</a>.
+                  </li>
+                </ul>
+                My main areas of focus are generative models, visual compression/tokenization, 3D reconstruction, and novel view synthesis.
+              </p>
+            <!-- FILTER BAR -->
+        <div id="filters">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <!-- {% assign all_cats = site.posts 
+               | map: "categories" 
+               | join: "," 
+               | split: "," 
+               | uniq 
+               | sort
+               | where_exp: "c", "c != 'research'" %} -->
+            {% assign all_cats = "Visual Tokenization,Large Generative Models with 3D Controls,Visual Robustness,Misc" 
+               | split: "," %}
+            {% for cat in all_cats %}
+            <button class="filter-btn" data-filter="{{ cat | escape }}">
+              {{ cat }}
+            </button>
+          {% endfor %}
+        </div>
+
+        <!-- POSTS TABLE -->
+        <table style="width:100%;border-spacing:0;border-collapse:separate;margin:0 auto;">
           {% for post in site.posts %}
-          {% for cat in post.categories %}
-          {% if cat == 'research' %}
-          <tr>
-            <td style="padding:2.0%;width:37%;vertical-align:middle;horizontal-align:middle;min-width:120px">
-              {% if post.image %}
-              <center>
-              <img align='middle' src="{{post.image}}" alt="project image" style="width:auto; height:auto; max-width:100%;horizontal-align:middle" />
-              </center>
+            {% for cat in post.categories %}
+              {% if cat == 'research' %}
+                <tr class="post-item" data-categories="{{ post.categories | join: ',' }}">
+                  <td style="padding:2%;width:37%;vertical-align:middle;min-width:120px">
+                    {% if post.image %}
+                      <center>
+                        <img src="{{ post.image }}" alt="project image" style="max-width:100%;height:auto">
+                      </center>
+                    {% endif %}
+                    {% if post.video %}
+                      <video height="157" width="269" class="demoVideo" muted loop autoplay>
+                        <source src="{{ post.video }}" type="video/mp4">
+                      </video>
+                    {% endif %}
+                  </td>
+                  <td style="padding:2.5%;width:63%;vertical-align:middle">
+                    <h3>{{ post.title }}</h3>
+                    <p>{{ post.authors }}<br>{{ post.venue }}
+                      {% if post.venue2 %}<br>{{ post.venue2 }}{% endif %}<br>
+                      {% if post.arxiv %}<a href="{{ post.arxiv }}">arxiv</a> /{% endif %}
+                      {% if post.thesis %}<a href="{{ post.thesis }}">thesis</a> /{% endif %}
+                      {% if post.poster %}<a href="{{ post.poster }}">poster</a> /{% endif %}
+                      {% if post.projectpage %}<a href="{{ post.projectpage }}">project page</a> /{% endif %}
+                      {% if post.visualresults %}<a href="{{ post.visualresults }}">visual results</a> /{% endif %}
+                      {% if post.slides %}<a href="{{ post.slides }}">slides</a> /{% endif %}
+                      {% if post.code %}<a href="{{ post.code }}">code</a> /{% endif %}
+                    </p>
+                    <p>{{ post.excerpt }}</p>
+                  </td>
+                </tr>
               {% endif %}
-              {% if post.video %}
-              <video height=157 width=269 class="demoVideo" muted loop autoplay>
-              <source src="{{ post.video }}" type="video/mp4">Your browser does not support the video tag.
-              </video>
-              {% endif %}
-            </td>
-            <td style="padding:2.5%;width:63%;vertical-align:middle">
-              <h3>{{post.title}}</h3>
-              <br>
-              <br>
-              {{post.authors}}
-
-              <br>
-              {{post.venue}}
-              {% if post.venue2 %}
-              <br>
-              {{post.venue2}}
-              {% endif %}
-              <br>
-              {% if post.arxiv %}
-              <a href="{{post.arxiv}}">arxiv</a> /
-              {% endif %}
-              {% if post.thesis %}
-              <a href="{{post.thesis}}">thesis</a> /
-              {% endif %}
-              {% if post.poster %}
-              <a href="{{post.poster}}">poster</a> /
-              {% endif %}
-              {% if post.projectpage %}
-              <a href="{{post.projectpage}}">project page</a> /
-              {% endif %}
-              {% if post.visualresults %}
-              <a href="{{post.visualresults}}">visual results</a> /
-              {% endif %}
-              {% if post.slides %}
-              <a href="{{post.slides}}">slides</a> /
-              {% endif %}
-              {% if post.code %}
-              <a href="{{post.code}}">code</a> /
-              {% endif %}
-              <p></p>
-              {{ post.excerpt }}
-            </td>
-          </tr>
-          {% endif %}
-          {% endfor %}
+            {% endfor %}
           {% endfor %}
         </table>
-        <br>
-        <br>
-        <br>
+        <!-- end posts table -->
 
-        <table style="width:100%;border:0px;border-spacing:0px;border-collapse:separate;margin-right:auto;margin-left:auto;">
-          <tr>
-            <td style="padding:0px">
-              <br>
-              <p style="text-align:center;font-size:small;">
-                Built with the
-                <a style="font-size:small;" href="https://github.com/leonidk/new_website/">Jekyll fork</a> by
-                <a style="font-size:small;" href="https://leonidk.com/">Leonid Keselman </a> of
-                <a style="font-size:small;" href="https://jonbarron.info">Jon Barron's website</a>.
-              </p>
-            </td>
-          </tr>
-        </table>
+        <!-- footer omitted for brevity -->
       </td>
     </tr>
   </table>
+
+  <!-- FILTERING SCRIPT -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function(){
+      const buttons = document.querySelectorAll(".filter-btn");
+      const rows    = document.querySelectorAll(".post-item");
+
+      buttons.forEach(btn => {
+        btn.addEventListener("click", () => {
+          buttons.forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+          const filter = btn.getAttribute("data-filter");
+          rows.forEach(row => {
+            const cats = row.getAttribute("data-categories").split(",");
+            row.style.display = (filter === "all" || cats.includes(filter))
+              ? "" : "none";
+          });
+        });
+      });
+    });
+  </script>
 </body>
 
 </html>

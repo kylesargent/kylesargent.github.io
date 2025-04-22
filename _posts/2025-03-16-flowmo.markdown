@@ -4,6 +4,7 @@ title:  "Flow to the Mode: Mode-Seeking Diffusion Autoencoders for State-of-the-
 date:   2025-03-17 00:00:00 +00:00
 video: /videos/flowmo.mp4
 venue: <em>arXiv</em>, 2024.
+category: Visual Tokenization
 categories: research
 authors: "<strong>Kyle Sargent</strong>, Kyle Hsu, Justin Johnson, Li Fei-Fei, Jiajun Wu"
 arxiv: https://www.arxiv.org/abs/2503.11056
