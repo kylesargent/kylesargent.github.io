@@ -3,7 +3,7 @@ layout: post
 title:  "Flow to the Mode: Mode-Seeking Diffusion Autoencoders for State-of-the-Art Image Tokenization"
 date:   2025-03-17 00:00:00 +00:00
 video: /videos/flowmo.mp4
-venue: <em>arXiv</em>, 2024.
+venue: <em>ICCV</em>, 2025.
 category: Visual Tokenization
 categories: research
 authors: "<strong>Kyle Sargent</strong>, Kyle Hsu, Justin Johnson, Li Fei-Fei, Jiajun Wu"
