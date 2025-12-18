@@ -6,7 +6,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
 
     <title>VLIC: Vision-Language Models As Perceptual Judges
-for Human-Aligned Image Compression</title>
+        for Human-Aligned Image Compression</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta property="og:image:type" content="image/png">
@@ -16,6 +16,8 @@ for Human-Aligned Image Compression</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
@@ -23,18 +25,73 @@ for Human-Aligned Image Compression</title>
     <link rel="stylesheet" type="text/css" href="gallery_style.css">
     <script src="comparison.js"></script>
     <style>
-    body, h1, h2, h3, h4, h5, h6, p, div {
-        font-family: 'Open Sans', sans-serif !important;
-    }
-</style>
-<style>
+        body,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        p,
+        div {
+            font-family: 'Open Sans', sans-serif !important;
+        }
+    </style>
+    <style>
+        .button {
+            display: inline-block;
+            padding: 6px 14px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 16px;
+            line-height: 1.2;
+        }
+
+        .is-dark {
+            background-color: #111;
+            /* black-ish */
+            color: white !important;
+        }
+
+        .is-rounded {
+            border-radius: 999px;
+        }
+
+        .icon {
+            margin-right: 8px;
+        }
+
+        .button:hover {
+            opacity: 0.9;
+        }
+
+        .link-block {
+            display: inline-block;
+            margin: 0 8px;
+        }
+
         /* === WIDGET STYLES (Scoped with 'ic-' prefix) === */
-        
+        .bibtex-block {
+            background: #f3f7fb;
+            /* very light blue */
+            border: 1px solid #c9d8ee;
+            /* desaturated blue border */
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            overflow-x: auto;
+
+            font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            font-size: 0.85rem;
+            line-height: 1.45;
+        }
+
         .ic-widget-wrapper {
             display: flex;
             flex-direction: row;
             width: 100%;
-            height: 550px; /* Increased height slightly for bottom bar */
+            height: 550px;
+            /* Increased height slightly for bottom bar */
             background-color: #222;
             border: 1px solid #444;
             border-radius: 8px;
@@ -48,7 +105,8 @@ for Human-Aligned Image Compression</title>
             flex: 1;
             display: flex;
             flex-direction: column;
-            min-width: 0; /* Flexbox fix for overflow */
+            min-width: 0;
+            /* Flexbox fix for overflow */
         }
 
         /* 1. The Image Viewer Area */
@@ -69,7 +127,8 @@ for Human-Aligned Image Compression</title>
             background-color: #2a2a2a;
             display: flex;
             align-items: center;
-            overflow-x: auto; /* Scroll if many scenes */
+            overflow-x: auto;
+            /* Scroll if many scenes */
             padding: 0 10px;
             gap: 10px;
             white-space: nowrap;
@@ -77,10 +136,19 @@ for Human-Aligned Image Compression</title>
             scrollbar-width: thin;
             scrollbar-color: #555 #2a2a2a;
         }
-        
-        .ic-bottom-bar::-webkit-scrollbar { height: 6px; }
-        .ic-bottom-bar::-webkit-scrollbar-track { background: #2a2a2a; }
-        .ic-bottom-bar::-webkit-scrollbar-thumb { background: #555; border-radius: 3px; }
+
+        .ic-bottom-bar::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .ic-bottom-bar::-webkit-scrollbar-track {
+            background: #2a2a2a;
+        }
+
+        .ic-bottom-bar::-webkit-scrollbar-thumb {
+            background: #555;
+            border-radius: 3px;
+        }
 
         .ic-scene-btn {
             background: #383838;
@@ -93,10 +161,14 @@ for Human-Aligned Image Compression</title>
             transition: all 0.2s;
         }
 
-        .ic-scene-btn:hover { background: #444; color: white; }
-        
+        .ic-scene-btn:hover {
+            background: #444;
+            color: white;
+        }
+
         .ic-scene-btn.active {
-            background: #ef4444; /* Red to match slider handle */
+            background: #ef4444;
+            /* Red to match slider handle */
             color: white;
             border-color: #dc2626;
         }
@@ -133,7 +205,7 @@ for Human-Aligned Image Compression</title>
         .ic-comp-container {
             position: relative;
             width: fit-content;
-            height: 650px; 
+            height: 650px;
             user-select: none;
         }
 
@@ -147,7 +219,9 @@ for Human-Aligned Image Compression</title>
             pointer-events: none;
         }
 
-        .ic-bg-layer { z-index: 1; }
+        .ic-bg-layer {
+            z-index: 1;
+        }
 
         .ic-overlay-wrapper {
             position: absolute;
@@ -174,29 +248,43 @@ for Human-Aligned Image Compression</title>
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
         }
-        
-        .ic-slider-handle::after { content: '↔'; color: white; font-weight: bold; }
+
+        .ic-slider-handle::after {
+            content: '↔';
+            color: white;
+            font-weight: bold;
+        }
 
         .ic-label {
-    position: absolute;
-    bottom: 10px;
-    padding: 6px 10px;       /* Increased padding slightly */
-    background: rgba(0, 0, 0, 0.7);
-    color: white;
-    border-radius: 4px;
-    font-size: 14px;         /* CHANGED: Larger text (was 11px) */
-    pointer-events: none;
-    
-    /* CHANGED: Prevents wrapping */
-    white-space: nowrap;     
-    
-    /* CHANGED: Smooth fade for disappearing */
-    transition: opacity 0.2s ease; 
-}
-        .ic-label-left { left: 10px; z-index: 2; }
-        .ic-label-right { right: 10px; z-index: 1; }
+            position: absolute;
+            bottom: 10px;
+            padding: 6px 10px;
+            /* Increased padding slightly */
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border-radius: 4px;
+            font-size: 14px;
+            /* CHANGED: Larger text (was 11px) */
+            pointer-events: none;
+
+            /* CHANGED: Prevents wrapping */
+            white-space: nowrap;
+
+            /* CHANGED: Smooth fade for disappearing */
+            transition: opacity 0.2s ease;
+        }
+
+        .ic-label-left {
+            left: 10px;
+            z-index: 2;
+        }
+
+        .ic-label-right {
+            right: 10px;
+            z-index: 1;
+        }
 
         /* Sidebar Buttons */
         .ic-btn {
@@ -215,8 +303,11 @@ for Human-Aligned Image Compression</title>
             overflow: hidden;
         }
 
-        .ic-btn:hover { background: #404040; color: #fff; }
-        
+        .ic-btn:hover {
+            background: #404040;
+            color: #fff;
+        }
+
         .ic-btn.active {
             background: #3b82f6;
             color: white;
@@ -228,149 +319,175 @@ for Human-Aligned Image Compression</title>
             overflow: hidden;
             text-overflow: ellipsis;
         }
+
         .ic-widget-wrapper {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    height: auto;        /* CHANGED: Let content dictate height */
-    min-height: 400px;   /* Safety: Minimum height so sidebar fits */
-    background-color: #222;
-    border: 1px solid #444;
-    border-radius: 8px;
-    overflow: hidden;
-    font-family: sans-serif;
-    box-sizing: border-box;
-    align-items: stretch; /* Ensures Sidebar matches Image height */
-}
-
-/* 2. COMP CONTAINER: Remove fixed height */
-.ic-comp-container {
-
-    position: relative;
-    width: fit-content;
-    height: 650px;        /* CHANGED: Wraps tightly around image */
-    user-select: none;
-    line-height: 0;      /* Removes tiny gaps under images */
-}
-
-/* 3. BACKGROUND LAYER (The Spacer): This forces the box open */
-.ic-bg-layer {
-    position: relative;  /* CHANGED: Was absolute. Now it takes up space */
-    width: 100%;
-    height: auto;        /* CHANGED: Natural image height */
-    display: block;
-    z-index: 1;
-}
-
-/* 4. KEEP OVERLAY ABSOLUTE (Standard rules) */
-.ic-overlay-wrapper {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 50%;
-    height: 100%;        /* Matches the height set by the bg-layer */
-    overflow: hidden;
-    z-index: 2;
-    border-right: 2px solid #ef4444;
-}
-
-/* Ensure other images stay absolute/fitting */
-.ic-comp-img:not(.ic-bg-layer) {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;   /* or contain, based on preference */
-}
-
-/* 1. VIEWER AREA: Acts as the black backdrop/stage */
-.ic-viewer-area {
-    flex: 1;
-    position: relative;
-    background-color: #000; /* The "Black Sidebar Padding" */
-    overflow: hidden;
-    display: flex;
-    align-items: center;    /* Center vertically */
-    justify-content: center;/* Center horizontally */
-    border-bottom: 1px solid #333;
-}
-
-/* 2. COMP CONTAINER: Shrink-wraps the image */
-.ic-comp-container {
-    position: relative;
-    /* Important: Collapse width to fit the image, but don't overflow screen */
-    height: 650px;
-    width: fit-content; 
-    height: auto;
-    user-select: none;
-    line-height: 0;
-    box-shadow: 0 0 20px rgba(0,0,0,0.5);
-}
-
-/* 3. BACKGROUND LAYER (The Driver) */
-/* This image dictates the size of the widget */
-.ic-bg-layer {
-    position: relative;
-    display: block;
-    
-    /* --- SET YOUR MAX HEIGHT HERE --- */
-    /* max-height: 650px;  */
-    
-    /* Auto width/height ensures NO AR DISTORTION */
-    width: auto;
-    height: 650px;
-    
-    /* Ensure it never exceeds the screen width */
-    max-width: 100%;
-    object-fit: contain;
-    z-index: 1;
-}
-
-/* 4. FOREGROUND (Reference) */
-/* Must exactly match the dimensions of the background image */
-.ic-comp-img:not(.ic-bg-layer) {
-    position: absolute;
-    top: 0;
-    left: 0;
-    /* Width is handled by JS, Height matches container */
-    height: 100%; 
-    object-fit: cover; /* Ensures it fills the calculated box perfectly */
-}
-
-/* 5. OVERLAY WRAPPER */
-.ic-overlay-wrapper {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 50%; /* JS changes this */
-    height: 100%;
-    overflow: hidden;
-    z-index: 2;
-    border-right: 2px solid #ef4444;
-}
-
-        @media (max-width: 600px) {
-            .ic-widget-wrapper { flex-direction: column; height: 700px; }
-            .ic-sidebar { width: 100%; height: 150px; border-left: none; border-top: 1px solid #444; }
-            .ic-bottom-bar { order: 2; border-top: 1px solid #444; }
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            height: auto;
+            /* CHANGED: Let content dictate height */
+            min-height: 400px;
+            /* Safety: Minimum height so sidebar fits */
+            background-color: #222;
+            border: 1px solid #444;
+            border-radius: 8px;
+            overflow: hidden;
+            font-family: sans-serif;
+            box-sizing: border-box;
+            align-items: stretch;
+            /* Ensures Sidebar matches Image height */
         }
 
+        /* 2. COMP CONTAINER: Remove fixed height */
+        .ic-comp-container {
 
+            position: relative;
+            width: fit-content;
+            height: 650px;
+            /* CHANGED: Wraps tightly around image */
+            user-select: none;
+            line-height: 0;
+            /* Removes tiny gaps under images */
+        }
 
+        /* 3. BACKGROUND LAYER (The Spacer): This forces the box open */
+        .ic-bg-layer {
+            position: relative;
+            /* CHANGED: Was absolute. Now it takes up space */
+            width: 100%;
+            height: auto;
+            /* CHANGED: Natural image height */
+            display: block;
+            z-index: 1;
+        }
+
+        /* 4. KEEP OVERLAY ABSOLUTE (Standard rules) */
+        .ic-overlay-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 50%;
+            height: 100%;
+            /* Matches the height set by the bg-layer */
+            overflow: hidden;
+            z-index: 2;
+            border-right: 2px solid #ef4444;
+        }
+
+        /* Ensure other images stay absolute/fitting */
+        .ic-comp-img:not(.ic-bg-layer) {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* or contain, based on preference */
+        }
+
+        /* 1. VIEWER AREA: Acts as the black backdrop/stage */
+        .ic-viewer-area {
+            flex: 1;
+            position: relative;
+            background-color: #000;
+            /* The "Black Sidebar Padding" */
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            /* Center vertically */
+            justify-content: center;
+            /* Center horizontally */
+            border-bottom: 1px solid #333;
+        }
+
+        /* 2. COMP CONTAINER: Shrink-wraps the image */
+        .ic-comp-container {
+            position: relative;
+            /* Important: Collapse width to fit the image, but don't overflow screen */
+            height: 650px;
+            width: fit-content;
+            height: auto;
+            user-select: none;
+            line-height: 0;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        /* 3. BACKGROUND LAYER (The Driver) */
+        /* This image dictates the size of the widget */
+        .ic-bg-layer {
+            position: relative;
+            display: block;
+
+            /* --- SET YOUR MAX HEIGHT HERE --- */
+            /* max-height: 650px;  */
+
+            /* Auto width/height ensures NO AR DISTORTION */
+            width: auto;
+            height: 650px;
+
+            /* Ensure it never exceeds the screen width */
+            max-width: 100%;
+            object-fit: contain;
+            z-index: 1;
+        }
+
+        /* 4. FOREGROUND (Reference) */
+        /* Must exactly match the dimensions of the background image */
+        .ic-comp-img:not(.ic-bg-layer) {
+            position: absolute;
+            top: 0;
+            left: 0;
+            /* Width is handled by JS, Height matches container */
+            height: 100%;
+            object-fit: cover;
+            /* Ensures it fills the calculated box perfectly */
+        }
+
+        /* 5. OVERLAY WRAPPER */
+        .ic-overlay-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 50%;
+            /* JS changes this */
+            height: 100%;
+            overflow: hidden;
+            z-index: 2;
+            border-right: 2px solid #ef4444;
+        }
+
+        @media (max-width: 600px) {
+            .ic-widget-wrapper {
+                flex-direction: column;
+                height: 700px;
+            }
+
+            .ic-sidebar {
+                width: 100%;
+                height: 150px;
+                border-left: none;
+                border-top: 1px solid #444;
+            }
+
+            .ic-bottom-bar {
+                order: 2;
+                border-top: 1px solid #444;
+            }
+        }
     </style>
 
 </head>
 
 <!-- <body style="padding: 5%; padding-top: min(15px, 5%); padding-bottom: min(5px, 5%); width: 100%"> -->
+
 <body style="width: 1200px; margin: 0 auto; padding-top: 15px; padding-bottom: 15px;">
     <div class="container-lg text-center" style="max-width: 800px; margin: auto; width: 100%;" id="main">
         <header role="banner">
             <div class="row">
                 <h2 class="col-md-12 text-center">
-                    <b>VLIC</b>: 
-                        Vision-Language Models As Perceptual Judges <br>
-                        for Human-Aligned Image Compression
+                    <b>VLIC</b>:
+                    Vision-Language Models As Perceptual Judges <br>
+                    for Human-Aligned Image Compression
                     </br>
                 </h2>
                 <h4 class="col-md-12 text-center mb-4">
@@ -380,380 +497,393 @@ for Human-Aligned Image Compression</title>
             <div class="row text-center">
                 <div class="col-md-3">
                 </div>
-                </div>
+            </div>
 
-                <div class="col-md-12 text-center" style="font-size: calc(min(3vw, 15px))">
-                    
-<a href=kylesargent.github.io>Kyle Sargent<sup>1</sup></a>,&nbsp;&nbsp;
-<a href=https://ruiqigao.github.io/>Ruiqi Gao<sup>3</sup></a>,&nbsp;&nbsp;
-<a href=https://henzler.github.io/>Philipp Henzler<sup>2</sup></a>,&nbsp;&nbsp;
-<a href=https://www.linkedin.com/in/charles-herrmann-9573379/>Charles Herrmann<sup>3</sup></a>,&nbsp;&nbsp;
-<a href=https://holynski.org/>Aleksander Holynski<sup>3</sup></a>,&nbsp;&nbsp;
-<br>
+            <div class="col-md-12 text-center" style="font-size: calc(min(3vw, 15px))">
 
-<a href=https://profiles.stanford.edu/fei-fei-li>Li Fei-Fei<sup>1</sup></a>,&nbsp;&nbsp;
-<a href=https://jiajunwu.com/>Jiajun Wu<sup>1</sup></a>,&nbsp;&nbsp;
-<a href=https://jasonyzhang.com/>Jason Zhang<sup>2</sup></a>&nbsp;&nbsp;
+                <a href=kylesargent.github.io>Kyle Sargent<sup>1</sup></a>,&nbsp;&nbsp;
+                <a href=https://ruiqigao.github.io />Ruiqi Gao<sup>3</sup></a>,&nbsp;&nbsp;
+                <a href=https://henzler.github.io />Philipp Henzler<sup>2</sup></a>,&nbsp;&nbsp;
+                <a href=https://www.linkedin.com/in/charles-herrmann-9573379 />Charles
+                Herrmann<sup>3</sup></a>,&nbsp;&nbsp;
+                <a href=https://holynski.org />Aleksander Holynski<sup>3</sup></a>,&nbsp;&nbsp;
+                <br>
 
-<br>
-<sup>1</sup>Stanford University&nbsp;&nbsp;
-<sup>2</sup>Google Research&nbsp;&nbsp;
-<sup>3</sup>Google DeepMind&nbsp;&nbsp;
+                <a href=https://profiles.stanford.edu/fei-fei-li>Li Fei-Fei<sup>1</sup></a>,&nbsp;&nbsp;
+                <a href=https://jiajunwu.com />Jiajun Wu<sup>1</sup></a>,&nbsp;&nbsp;
+                <a href=https://jasonyzhang.com />Jason Zhang<sup>2</sup></a>&nbsp;&nbsp;
 
-                    <br>
-                    <br>
-                </div>
+                <br>
+                <sup>1</sup>Stanford University&nbsp;&nbsp;
+                <sup>2</sup>Google Research&nbsp;&nbsp;
+                <sup>3</sup>Google DeepMind&nbsp;&nbsp;
 
             </div>
-        </header>
 
-<body>
+    </div>
+    </header>
 
-<h2 class="text-center">Overview</h2>
-Can we use VLMs as judges to improve human-aligned image compression? Yes! In <b>VLIC</b> (<b>V</b>ision <b>L</b>anguage Models for <b>I</b>mage <b>C</b>ompression), we present a diffusion-based image 
-compression system designed to be post-trained with binary VLM judgments. VLIC leverages existing techniques for 
-diffusion model post-training with preferences, rather than distilling the VLM judgments into a separate perceptual loss 
-network. Please consult our paper for more details, and check out the visualizations on this page!
-<br>
+    <div class="text-center" style="margin: 14px 0 24px 0;">
+    <span class="link-block">
+        <a href="https://arxiv.org/abs/2512.15701"
+            class="button is-rounded is-dark"
+            target="_blank" rel="noopener">
+        <span class="icon"><i class="fas fa-file-pdf"></i></span>
+        <span>Paper</span>
+        </a>
+    </span>
+    </div>
 
-<p align="center">
-  <img src="vlic_images/Teaser.png" width=100% alt="centered image" />
-</p>
+    <body>
 
-<div style="max-width: 1200px; margin: 40px auto; font-family: sans-serif; color: #333;">
-        <h1 align="center">Gallery</h1>
-        <p>Select a <b>Scene</b> from the bottom bar. Select a <b>Method</b> from the sidebar to compare against VLIC.</p>
-        
-        <div id="image-compare-widget" class="ic-widget-wrapper">
-            
-            <div class="ic-main-column">
-                
-                <div class="ic-viewer-area">
-                    <div class="ic-comp-container" id="icCompContainer">
-                        <img src="" class="ic-comp-img ic-bg-layer" id="icCandImageBg">
-                        <div class="ic-label ic-label-right" id="icCandLabel">Candidate</div>
+        <h2 class="text-center">Overview</h2>
+        Can we use VLMs as judges to improve human-aligned image compression? Yes! In <b>VLIC</b> (<b>V</b>ision
+        <b>L</b>anguage Models for <b>I</b>mage <b>C</b>ompression), we present a diffusion-based image
+        compression system designed to be post-trained with binary VLM judgments. VLIC leverages existing techniques for
+        diffusion model post-training with preferences, rather than distilling the VLM judgments into a separate
+        perceptual loss
+        network. Please consult our paper for more details, and check out the visualizations on this page!
+        <br>
 
-                        <div class="ic-overlay-wrapper" id="icOverlay">
-                            <img src="" class="ic-comp-img" id="icRefImageFg">
-                            <div class="ic-label ic-label-left" id="icRefLabel">Reference</div>
+        <p align="center">
+            <img src="vlic_images/Teaser.png" width=100% alt="centered image" />
+        </p>
+
+        <div style="max-width: 1200px; margin: 40px auto; font-family: sans-serif; color: #333;">
+            <h1 align="center">Gallery</h1>
+            <p>Select a <b>Scene</b> from the bottom bar. Select a <b>Method</b> from the sidebar to compare against
+                VLIC.</p>
+
+            <div id="image-compare-widget" class="ic-widget-wrapper">
+
+                <div class="ic-main-column">
+
+                    <div class="ic-viewer-area">
+                        <div class="ic-comp-container" id="icCompContainer">
+                            <img src="" class="ic-comp-img ic-bg-layer" id="icCandImageBg">
+                            <div class="ic-label ic-label-right" id="icCandLabel">Candidate</div>
+
+                            <div class="ic-overlay-wrapper" id="icOverlay">
+                                <img src="" class="ic-comp-img" id="icRefImageFg">
+                                <div class="ic-label ic-label-left" id="icRefLabel">Reference</div>
+                            </div>
+
+                            <div class="ic-slider-handle" id="icSliderHandle"></div>
                         </div>
+                    </div>
 
-                        <div class="ic-slider-handle" id="icSliderHandle"></div>
+                    <div class="ic-bottom-bar" id="icSceneList">
+                    </div>
+
+                </div>
+
+                <div class="ic-sidebar">
+                    <div class="ic-sidebar-header">Methods</div>
+                    <div class="ic-image-list" id="icMethodList">
                     </div>
                 </div>
 
-                <div class="ic-bottom-bar" id="icSceneList">
-                    </div>
-
             </div>
-
-            <div class="ic-sidebar">
-                <div class="ic-sidebar-header">Methods</div>
-                <div class="ic-image-list" id="icMethodList">
-                    </div>
-            </div>
-
-        </div>
         </div>
 
-    <script>
-    (function() {
-    // =========================================
-    // DATA STRUCTURE (Now with BPP)
-    // =========================================
-    const scenes = [
-        {
-            id: "scene1",
-            name: "Skyline (CLIC 2022)",
-            
-            // LHS IMAGE DETAILS
-            reference: {
-                url: "vlic_images/skyline__vlic.png",
-                name: "Ours",
-                bpp: 0.080  // <--- NEW FIELD
-            },
+        <script>
+            (function () {
+                // =========================================
+                // DATA STRUCTURE (Now with BPP)
+                // =========================================
+                const scenes = [
+                    {
+                        id: "scene1",
+                        name: "Skyline (CLIC 2022)",
 
-            // RHS CANDIDATES
-            candidates: [
-                { 
-                    name: "Original", 
-                    url: "vlic_images/skyline__original.png", 
-                },
-                { 
-                    name: "PO-ELIC", 
-                    url: "vlic_images/skyline__poelic.png", 
-                    bpp: 0.116 // <--- NEW FIELD
-                },
-                { 
-                    name: "HiFiC", 
-                    url: "vlic_images/skyline__hific.png",
-                    bpp: 0.215
-                    // No BPP for ground truth, logic handles this
+                        // LHS IMAGE DETAILS
+                        reference: {
+                            url: "vlic_images/skyline__vlic.png",
+                            name: "Ours",
+                            bpp: 0.080  // <--- NEW FIELD
+                        },
+
+                        // RHS CANDIDATES
+                        candidates: [
+                            {
+                                name: "Original",
+                                url: "vlic_images/skyline__original.png",
+                            },
+                            {
+                                name: "PO-ELIC",
+                                url: "vlic_images/skyline__poelic.png",
+                                bpp: 0.116 // <--- NEW FIELD
+                            },
+                            {
+                                name: "HiFiC",
+                                url: "vlic_images/skyline__hific.png",
+                                bpp: 0.215
+                                // No BPP for ground truth, logic handles this
+                            }
+                        ]
+                    },
+                    {
+                        id: "clic2022_test732bf474788c19c0c1fae6dd7689d4cda2f4e0632a1c7725e970b69d44d08f3e",
+                        name: "Bridge (CLIC 2022)",
+                        reference: {
+                            name: "Ours",
+                            url: "vlic_images/clic2022_test732bf474788c19c0c1fae6dd7689d4cda2f4e0632a1c7725e970b69d44d08f3e__vlic.png",
+                            bpp: 0.076
+                        },
+                        candidates: [
+                            { name: "Original", url: "vlic_images/clic2022_test732bf474788c19c0c1fae6dd7689d4cda2f4e0632a1c7725e970b69d44d08f3e__original.png" },
+                            { name: "HiFiC", url: "vlic_images/clic2022_test732bf474788c19c0c1fae6dd7689d4cda2f4e0632a1c7725e970b69d44d08f3e__hific.png", bpp: 0.12 },
+                            { name: "PO-ELIC", url: "vlic_images/clic2022_test732bf474788c19c0c1fae6dd7689d4cda2f4e0632a1c7725e970b69d44d08f3e__poelic.png", bpp: 0.068 }
+                        ]
+                    },
+                    {
+                        id: "scene3",
+                        name: "Woman (MS-COCO)",
+                        reference: {
+                            url: "vlic_images/lady__vlic.png",
+                            name: "Ours",
+                            bpp: 0.197
+                        },
+                        candidates: [
+                            { name: "Original", url: "vlic_images/lady__original.png" },
+                            { name: "HiFiC", url: "vlic_images/lady__hific.png", bpp: 0.200 },
+                            { name: "PerCo", url: "vlic_images/lady__perco.png", bpp: 0.500 }
+                        ]
+                    },
+                    {
+                        id: "scene3",
+                        name: "Tennis player (MS-COCO)",
+                        reference: {
+                            url: "vlic_images/man__vlic.png",
+                            name: "Ours",
+                            bpp: 0.065
+                        },
+                        candidates: [
+                            { name: "Original", url: "vlic_images/man__original.png" },
+                            { name: "HiFiC", url: "vlic_images/man__hific.png", bpp: 0.187 },
+                            { name: "PerCo", url: "vlic_images/man__perco.png", bpp: 0.500 }
+                        ]
+                    },
+                    {
+                        id: "scene4",
+                        name: "Bar (MS-COCO)",
+                        reference: {
+                            url: "vlic_images/bar__vlic.png",
+                            name: "Ours",
+                            bpp: 0.201
+                        },
+                        candidates: [
+                            { name: "Original", url: "vlic_images/bar__original.png" },
+                            { name: "HiFiC", url: "vlic_images/bar__hific.png", bpp: 0.313 },
+                            { name: "PerCo", url: "vlic_images/bar__perco.png", bpp: 0.500 }
+                        ]
+                    },
+                    {
+                        id: "scene5",
+                        name: "Hunter (MS-COCO)",
+                        reference: {
+                            url: "vlic_images/hunter__vlic.png",
+                            name: "Ours",
+                            bpp: 0.067
+                        },
+                        candidates: [
+                            { name: "Original", url: "vlic_images/hunter__original.png" },
+                            { name: "HiFiC", url: "vlic_images/hunter__hific.png", bpp: 0.280 },
+                            { name: "PerCo", url: "vlic_images/hunter__perco.png", bpp: 0.125 }
+                        ]
+                    },
+                    {
+                        id: "clic00001",
+                        name: "Dinner (CLIC 2020)",
+                        reference: {
+                            name: "Ours",
+                            url: "vlic_images/clic00001__vlic.png",
+                            bpp: 0.081
+                        },
+                        candidates: [
+                            { name: "Original", url: "vlic_images/clic00001__original.png" },
+                            { name: "HiFiC", url: "vlic_images/clic00001__hific.png", bpp: 0.114 },
+                        ]
+                    },
+                    {
+                        id: "clic00008",
+                        name: "Lady in dress (CLIC 2020)",
+                        reference: {
+                            name: "Ours",
+                            url: "vlic_images/clic00008__vlic.png",
+                            bpp: 0.074
+                        },
+                        candidates: [
+                            { name: "Original", url: "vlic_images/clic00008__original.png" },
+                            { name: "HiFiC", url: "vlic_images/clic00008__hific.png", bpp: 0.068 },
+                        ]
+                    },
+                    {
+                        id: "clic00009",
+                        name: "Cat (CLIC 2020)",
+                        reference: {
+                            name: "Ours",
+                            url: "vlic_images/clic00009__vlic.png",
+                            bpp: 0.064
+                        },
+                        candidates: [
+                            { name: "Original", url: "vlic_images/clic00009__original.png" },
+                            { name: "HiFiC", url: "vlic_images/clic00009__hific.png", bpp: 0.081 },
+                        ]
+                    },
+                    {
+                        id: "clic00037",
+                        name: "Firehouse (CLIC 2020)",
+                        reference: {
+                            name: "Ours",
+                            url: "vlic_images/clic00037__vlic.png",
+                            bpp: 0.081
+                        },
+                        candidates: [
+                            { name: "Original", url: "vlic_images/clic00037__original.png" },
+                            { name: "HiFiC", url: "vlic_images/clic00037__hific.png", bpp: 0.181 },
+                        ]
+                    },
+
+                ];
+
+                // =========================================
+                // ELEMENTS
+                // =========================================
+                const widgetRoot = document.getElementById('image-compare-widget');
+                const compContainer = widgetRoot.querySelector('#icCompContainer');
+
+                const refImgFg = widgetRoot.querySelector('#icRefImageFg');
+                const refLabelEl = widgetRoot.querySelector('#icRefLabel'); // <--- NEW ELEMENT
+
+                const candImgBg = widgetRoot.querySelector('#icCandImageBg');
+                const candLabelEl = widgetRoot.querySelector('#icCandLabel');
+
+                const overlayEl = widgetRoot.querySelector('#icOverlay');
+                const sliderHandle = widgetRoot.querySelector('#icSliderHandle');
+
+                const sceneListEl = widgetRoot.querySelector('#icSceneList');
+                const methodListEl = widgetRoot.querySelector('#icMethodList');
+
+                // =========================================
+                // HELPER: Format Label Text
+                // =========================================
+                function formatLabel(name, bpp) {
+                    if (bpp !== undefined && bpp !== null) {
+                        // Formats as "Name (0.45 bpp)"
+                        return `${name} <span style="opacity:0.7; font-size:0.9em;">(${bpp} bpp)</span>`;
+                    }
+                    return name;
                 }
-            ]
-        },
-        {
-            id: "clic2022_test732bf474788c19c0c1fae6dd7689d4cda2f4e0632a1c7725e970b69d44d08f3e",
-            name: "Bridge (CLIC 2022)",
-            reference: {
-                name: "Ours",
-                url: "vlic_images/clic2022_test732bf474788c19c0c1fae6dd7689d4cda2f4e0632a1c7725e970b69d44d08f3e__vlic.png",
-                bpp: 0.076
-            },
-            candidates: [
-                { name: "Original", url: "vlic_images/clic2022_test732bf474788c19c0c1fae6dd7689d4cda2f4e0632a1c7725e970b69d44d08f3e__original.png"},
-                { name: "HiFiC", url: "vlic_images/clic2022_test732bf474788c19c0c1fae6dd7689d4cda2f4e0632a1c7725e970b69d44d08f3e__hific.png", bpp: 0.12 },
-                { name: "PO-ELIC", url: "vlic_images/clic2022_test732bf474788c19c0c1fae6dd7689d4cda2f4e0632a1c7725e970b69d44d08f3e__poelic.png", bpp: 0.068 }
-            ]
-        },
-        {
-            id: "scene3",
-            name: "Woman (MS-COCO)",
-            reference: {
-                url: "vlic_images/lady__vlic.png",
-                name: "Ours",
-                bpp: 0.197
-            },
-            candidates: [
-                { name: "Original", url: "vlic_images/lady__original.png"},
-                { name: "HiFiC", url: "vlic_images/lady__hific.png", bpp: 0.200 },
-                { name: "PerCo", url: "vlic_images/lady__perco.png", bpp: 0.500 }
-            ]
-        },
-        {
-            id: "scene3",
-            name: "Tennis player (MS-COCO)",
-            reference: {
-                url: "vlic_images/man__vlic.png",
-                name: "Ours",
-                bpp: 0.065
-            },
-            candidates: [
-                { name: "Original", url: "vlic_images/man__original.png"},
-                { name: "HiFiC", url: "vlic_images/man__hific.png", bpp: 0.187 },
-                { name: "PerCo", url: "vlic_images/man__perco.png", bpp: 0.500 }
-            ]
-        },
-        {
-            id: "scene4",
-            name: "Bar (MS-COCO)",
-            reference: {
-                url: "vlic_images/bar__vlic.png",
-                name: "Ours",
-                bpp: 0.201
-            },
-            candidates: [
-                { name: "Original", url: "vlic_images/bar__original.png"},
-                { name: "HiFiC", url: "vlic_images/bar__hific.png", bpp: 0.313 },
-                { name: "PerCo", url: "vlic_images/bar__perco.png", bpp: 0.500 }
-            ]
-        },
-        {
-            id: "scene5",
-            name: "Hunter (MS-COCO)",
-            reference: {
-                url: "vlic_images/hunter__vlic.png",
-                name: "Ours",
-                bpp: 0.067
-            },
-            candidates: [
-                { name: "Original", url: "vlic_images/hunter__original.png"},
-                { name: "HiFiC", url: "vlic_images/hunter__hific.png", bpp: 0.280 },
-                { name: "PerCo", url: "vlic_images/hunter__perco.png", bpp: 0.125 }
-            ]
-        },
-        {
-            id: "clic00001",
-            name: "Dinner (CLIC 2020)",
-            reference: {
-                name: "Ours",
-                url: "vlic_images/clic00001__vlic.png",
-                bpp: 0.081
-            },
-            candidates: [
-                { name: "Original", url: "vlic_images/clic00001__original.png"},
-                { name: "HiFiC", url: "vlic_images/clic00001__hific.png", bpp: 0.114 },
-            ]
-        },
-        {
-            id: "clic00008",
-            name: "Lady in dress (CLIC 2020)",
-            reference: {
-                name: "Ours",
-                url: "vlic_images/clic00008__vlic.png",
-                bpp: 0.074
-            },
-            candidates: [
-                { name: "Original", url: "vlic_images/clic00008__original.png"},
-                { name: "HiFiC", url: "vlic_images/clic00008__hific.png", bpp: 0.068 },
-            ]
-        },
-        {
-            id: "clic00009",
-            name: "Cat (CLIC 2020)",
-            reference: {
-                name: "Ours",
-                url: "vlic_images/clic00009__vlic.png",
-                bpp: 0.064
-            },
-            candidates: [
-                { name: "Original", url: "vlic_images/clic00009__original.png"},
-                { name: "HiFiC", url: "vlic_images/clic00009__hific.png", bpp: 0.081 },
-            ]
-        },
-        {
-            id: "clic00037",
-            name: "Firehouse (CLIC 2020)",
-            reference: {
-                name: "Ours",
-                url: "vlic_images/clic00037__vlic.png",
-                bpp: 0.081
-            },
-            candidates: [
-                { name: "Original", url: "vlic_images/clic00037__original.png"},
-                { name: "HiFiC", url: "vlic_images/clic00037__hific.png", bpp: 0.181 },
-            ]
-        },
-        
-    ];
 
-    // =========================================
-    // ELEMENTS
-    // =========================================
-    const widgetRoot = document.getElementById('image-compare-widget');
-    const compContainer = widgetRoot.querySelector('#icCompContainer');
-    
-    const refImgFg = widgetRoot.querySelector('#icRefImageFg');
-    const refLabelEl = widgetRoot.querySelector('#icRefLabel'); // <--- NEW ELEMENT
-    
-    const candImgBg = widgetRoot.querySelector('#icCandImageBg');
-    const candLabelEl = widgetRoot.querySelector('#icCandLabel');
-    
-    const overlayEl = widgetRoot.querySelector('#icOverlay');
-    const sliderHandle = widgetRoot.querySelector('#icSliderHandle');
-    
-    const sceneListEl = widgetRoot.querySelector('#icSceneList');
-    const methodListEl = widgetRoot.querySelector('#icMethodList');
+                // =========================================
+                // INIT & LOGIC
+                // =========================================
 
-    // =========================================
-    // HELPER: Format Label Text
-    // =========================================
-    function formatLabel(name, bpp) {
-        if (bpp !== undefined && bpp !== null) {
-            // Formats as "Name (0.45 bpp)"
-            return `${name} <span style="opacity:0.7; font-size:0.9em;">(${bpp} bpp)</span>`;
-        }
-        return name;
-    }
+                function init() {
+                    // Render Bottom Bar (Scenes)
+                    scenes.forEach((scene, index) => {
+                        const btn = document.createElement('button');
+                        btn.className = 'ic-scene-btn';
+                        btn.textContent = scene.name;
+                        btn.onclick = () => loadScene(index, btn);
+                        sceneListEl.appendChild(btn);
+                    });
 
-    // =========================================
-    // INIT & LOGIC
-    // =========================================
-    
-    function init() {
-        // Render Bottom Bar (Scenes)
-        scenes.forEach((scene, index) => {
-            const btn = document.createElement('button');
-            btn.className = 'ic-scene-btn';
-            btn.textContent = scene.name;
-            btn.onclick = () => loadScene(index, btn);
-            sceneListEl.appendChild(btn);
-        });
+                    if (scenes.length > 0) loadScene(0, sceneListEl.children[0]);
 
-        if(scenes.length > 0) loadScene(0, sceneListEl.children[0]);
+                    addSliderEvents();
 
-        addSliderEvents();
+                    const resizeObserver = new ResizeObserver(() => syncImageSizes());
+                    resizeObserver.observe(compContainer);
+                    candImgBg.onload = syncImageSizes;
+                }
 
-        const resizeObserver = new ResizeObserver(() => syncImageSizes());
-        resizeObserver.observe(compContainer);
-        candImgBg.onload = syncImageSizes;
-    }
+                function loadScene(sceneIndex, btnElement) {
+                    const scene = scenes[sceneIndex];
 
-    function loadScene(sceneIndex, btnElement) {
-        const scene = scenes[sceneIndex];
+                    // 1. UPDATE LHS (REFERENCE)
+                    refImgFg.src = scene.reference.url;
+                    // Update the LHS label with Name + BPP
+                    refLabelEl.innerHTML = formatLabel(scene.reference.name, scene.reference.bpp);
 
-        // 1. UPDATE LHS (REFERENCE)
-        refImgFg.src = scene.reference.url;
-        // Update the LHS label with Name + BPP
-        refLabelEl.innerHTML = formatLabel(scene.reference.name, scene.reference.bpp);
+                    // Update Active Scene Button
+                    const sceneBtns = sceneListEl.querySelectorAll('.ic-scene-btn');
+                    sceneBtns.forEach(b => b.classList.remove('active'));
+                    btnElement.classList.add('active');
 
-        // Update Active Scene Button
-        const sceneBtns = sceneListEl.querySelectorAll('.ic-scene-btn');
-        sceneBtns.forEach(b => b.classList.remove('active'));
-        btnElement.classList.add('active');
+                    // 2. REBUILD SIDEBAR (RHS CANDIDATES)
+                    methodListEl.innerHTML = '';
 
-        // 2. REBUILD SIDEBAR (RHS CANDIDATES)
-        methodListEl.innerHTML = '';
-        
-        scene.candidates.forEach((cand, index) => {
-            const mBtn = document.createElement('button');
-            mBtn.className = 'ic-btn';
-            
-            // Show BPP in the sidebar button too? (Optional, looks nice)
-            const bppText = cand.bpp ? ` <small style="opacity:0.6; margin-left:auto;">${cand.bpp}</small>` : '';
-            
-            mBtn.innerHTML = `<span>${cand.name}</span>${bppText}`;
-            mBtn.onclick = () => selectCandidate(cand, mBtn);
-            methodListEl.appendChild(mBtn);
-        });
+                    scene.candidates.forEach((cand, index) => {
+                        const mBtn = document.createElement('button');
+                        mBtn.className = 'ic-btn';
 
-        if (scene.candidates.length > 0) {
-            selectCandidate(scene.candidates[0], methodListEl.children[0]);
-        }
+                        // Show BPP in the sidebar button too? (Optional, looks nice)
+                        const bppText = cand.bpp ? ` <small style="opacity:0.6; margin-left:auto;">${cand.bpp}</small>` : '';
 
-        candImgBg.onload = () => syncImageSizes();
-    }
+                        mBtn.innerHTML = `<span>${cand.name}</span>${bppText}`;
+                        mBtn.onclick = () => selectCandidate(cand, mBtn);
+                        methodListEl.appendChild(mBtn);
+                    });
 
-    function selectCandidate(candidateData, btnElement) {
-        // 3. UPDATE RHS (CANDIDATE)
-        candImgBg.src = candidateData.url;
-        // Update the RHS label with Name + BPP
-        candLabelEl.innerHTML = formatLabel(candidateData.name, candidateData.bpp);
+                    if (scene.candidates.length > 0) {
+                        selectCandidate(scene.candidates[0], methodListEl.children[0]);
+                    }
 
-        const methodBtns = methodListEl.querySelectorAll('.ic-btn');
-        methodBtns.forEach(b => b.classList.remove('active'));
-        btnElement.classList.add('active');
-    }
+                    candImgBg.onload = () => syncImageSizes();
+                }
 
-    function syncImageSizes() {
-        const width = compContainer.offsetWidth;
-        refImgFg.style.width = width + 'px';
-    }
+                function selectCandidate(candidateData, btnElement) {
+                    // 3. UPDATE RHS (CANDIDATE)
+                    candImgBg.src = candidateData.url;
+                    // Update the RHS label with Name + BPP
+                    candLabelEl.innerHTML = formatLabel(candidateData.name, candidateData.bpp);
 
-    function addSliderEvents() {
-        let isDragging = false;
-        const startDrag = (e) => { e.preventDefault(); isDragging = true; };
-        const stopDrag = () => { isDragging = false; };
-        
-        const moveDrag = (e) => {
-            if (!isDragging) return;
-            let clientX = (e.type === 'touchmove') ? e.touches[0].clientX : e.clientX;
-            const rect = compContainer.getBoundingClientRect();
-            let x = clientX - rect.left;
-            if (x < 0) x = 0;
-            if (x > rect.width) x = rect.width;
-            const percentage = (x / rect.width) * 100;
-            
-            overlayEl.style.width = percentage + "%";
-            sliderHandle.style.left = percentage + "%";
-            refImgFg.style.width = rect.width + 'px'; 
-        };
+                    const methodBtns = methodListEl.querySelectorAll('.ic-btn');
+                    methodBtns.forEach(b => b.classList.remove('active'));
+                    btnElement.classList.add('active');
+                }
 
-        sliderHandle.addEventListener('mousedown', startDrag);
-        compContainer.addEventListener('mousedown', startDrag);
-        window.addEventListener('mouseup', stopDrag);
-        window.addEventListener('mousemove', moveDrag);
-        sliderHandle.addEventListener('touchstart', startDrag, {passive: false});
-        compContainer.addEventListener('touchstart', startDrag, {passive: false});
-        window.addEventListener('touchend', stopDrag);
-        window.addEventListener('touchmove', moveDrag, {passive: false});
-    }
+                function syncImageSizes() {
+                    const width = compContainer.offsetWidth;
+                    refImgFg.style.width = width + 'px';
+                }
 
-    init();
-})();
-    </script>
+                function addSliderEvents() {
+                    let isDragging = false;
+                    const startDrag = (e) => { e.preventDefault(); isDragging = true; };
+                    const stopDrag = () => { isDragging = false; };
 
-<!-- <h2 class="text-center">Our method</h2>
+                    const moveDrag = (e) => {
+                        if (!isDragging) return;
+                        let clientX = (e.type === 'touchmove') ? e.touches[0].clientX : e.clientX;
+                        const rect = compContainer.getBoundingClientRect();
+                        let x = clientX - rect.left;
+                        if (x < 0) x = 0;
+                        if (x > rect.width) x = rect.width;
+                        const percentage = (x / rect.width) * 100;
+
+                        overlayEl.style.width = percentage + "%";
+                        sliderHandle.style.left = percentage + "%";
+                        refImgFg.style.width = rect.width + 'px';
+                    };
+
+                    sliderHandle.addEventListener('mousedown', startDrag);
+                    compContainer.addEventListener('mousedown', startDrag);
+                    window.addEventListener('mouseup', stopDrag);
+                    window.addEventListener('mousemove', moveDrag);
+                    sliderHandle.addEventListener('touchstart', startDrag, { passive: false });
+                    compContainer.addEventListener('touchstart', startDrag, { passive: false });
+                    window.addEventListener('touchend', stopDrag);
+                    window.addEventListener('touchmove', moveDrag, { passive: false });
+                }
+
+                init();
+            })();
+        </script>
+
+        <!-- <h2 class="text-center">Our method</h2>
 VLIC is a transformer-based diffusion autoencoder. The model (left) encodes images to a one-dimensional latent code which is entropy-coded via an autoregressive transformer. The decoder predicts a rectified flow velocity. The diffusion autoencoder is trained via Diffusion DPO to align to VLM preferences. We ensemble the VLM ranking process 3 times with itself to reduce noise in the ranking. We additionally require a unanimous vote between the VLM and LPIPS (a traditional perceptual metric) in order to further reduce noise. Preference pairs where LPIPS and the VLM do not agree are discarded.
 <br>
 <br>
@@ -761,6 +891,30 @@ VLIC is a transformer-based diffusion autoencoder. The model (left) encodes imag
 <p align="center">
   <img src="vlic_images/model_diagram.png" width=100% alt="centered image" />
 </p> -->
-We observe that VLIC produces high-quality reconstructions, particularly for human-relevant details such as text and faces. We conduct large-scale user studies and quantitative evaluations. Please consult the paper for the details. Thank you!
+        We observe that VLIC produces high-quality reconstructions, particularly for human-relevant details such as text
+        and faces. We conduct large-scale user studies and quantitative evaluations. Please consult the paper for the
+        details. Thank you!
+
+        <br>
+        <br>
+
+        <h2 align="center">Acknowledgments</h2>
+        We thank Ben Poole, David Minnen, and Dina Bashkirova for helpful discussions.
+
+        <br>
+        <br>
+        <section id="bibtex">
+            <h2 align="center">BibTeX</h2>
+
+        <pre class="bibtex-block"><code>
+        @article{sargent2025vlic,
+            title   = {VLIC: Vision-Language Models As Perceptual Judges for Human-Aligned Image Compression},
+            author  = {Sargent, Kyle and Gao, Ruiqi and Henzler, Philipp and Herrmann, Charles and Holynski, Aleksander and Li, Fei-Fei and Wu, Jiajun and Zhang, Jason},
+            journal = {arXiv preprint arXiv:XXXX.XXXXX},
+            year    = {2025}
+        }
+        </code></pre>
+        </section>
+
 
 </html>
