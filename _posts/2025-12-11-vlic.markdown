@@ -2,7 +2,7 @@
 layout: post
 title:  "VLIC: Vision-Language Models As Perceptual Judges for Human-Aligned Image Compression"
 date:   2025-12-11 00:00:00 +00:00
-video: /vlic_images/Teaser.png
+image: /vlic_images/Teaser_cropped.png
 venue: <em>arXiv</em>, 2025.
 category: Visual Tokenization
 categories: research
