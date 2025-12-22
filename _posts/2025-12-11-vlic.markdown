@@ -1,0 +1,13 @@
+---
+layout: post
+title:  "VLIC: Vision-Language Models As Perceptual Judges for Human-Aligned Image Compression"
+date:   2025-12-11 00:00:00 +00:00
+video: /vlic_images/Teaser.png
+venue: <em>arXiv</em>, 2025.
+category: Visual Tokenization
+categories: research
+authors: "<strong>Kyle Sargent</strong>, Ruiqi Gao, Philipp Henzler, Charles Herrmann, Aleksander Holynski, Li Fei-Fei, Jiajun Wu, Jason Zhang"
+arxiv: https://arxiv.org/abs/2512.15701
+projectpage: https://kylesargent.github.io/vlic
+---
+We propose Vision-Language Models for Image Compression (VLIC), a diffusion-based image compression system designed to be post-trained with binary VLM judgments. 
