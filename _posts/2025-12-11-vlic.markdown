@@ -3,7 +3,7 @@ layout: post
 title:  "VLIC: Vision-Language Models As Perceptual Judges for Human-Aligned Image Compression"
 date:   2025-12-11 00:00:00 +00:00
 image: /vlic_images/Teaser_cropped.png
-venue: <em>arXiv</em>, 2025.
+venue: <em>CVPR</em>, 2026.
 category: Visual Tokenization
 categories: research
 authors: "<strong>Kyle Sargent</strong>, Ruiqi Gao, Philipp Henzler, Charles Herrmann, Aleksander Holynski, Li Fei-Fei, Jiajun Wu, Jason Zhang"
